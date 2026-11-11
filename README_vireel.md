@@ -161,7 +161,3 @@ remains to be done separately if desired.
 - Some external integrations (AI, S3, Supabase, social networks) require valid credentials.
 - Performance depends on machine resources and on the nature of the media.
 - The AI/UGC workflows evolve iteratively and may require business adjustments.
-
-## Consolidation history
-
-This README replaces the former Markdown tracking files, checklists, guides and work notes to simplify documentation maintenance.
