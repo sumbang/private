@@ -1,103 +1,102 @@
-# Vireel.app - README unique
+# Vireel.app - Single README
 
-Ce fichier centralise l'information qui etait auparavant repartie dans plusieurs documents Markdown du projet.
+This file centralizes the information that was previously spread across several Markdown documents in the project.
 
-## Vue d'ensemble
+## Overview
 
-Vireel.app est une plateforme de creation video assistee par IA avec trois axes principaux:
+Vireel.app is an AI-assisted video creation platform built around three main areas:
 
-- **Clip Generator**: transforme des videos longues en clips courts (Reels/Shorts/TikTok).
-- **AI Shorts Creator**: pipeline de creation UGC automatisee.
-- **YouTube Studio**: aide a generer titres, miniatures et descriptions optimises.
+- **Clip Generator**: turns long videos into short clips (Reels/Shorts/TikTok).
+- **AI Shorts Creator**: automated UGC creation pipeline.
+- **YouTube Studio**: helps generate optimized titles, thumbnails and descriptions.
 
-Le projet est structure autour d'un backend Python/FastAPI, d'un dashboard React/Vite, d'un service de rendu et d'integrations cloud/IA.
+The project is structured around a Python/FastAPI backend, a React/Vite dashboard, a rendering service and cloud/AI integrations.
 
-## Composants du projet
+## Project components
 
-- `app.py`: API principale et orchestration des jobs backend.
-- `main.py`: traitement video, decoupage, analyse et generation de clips.
-- `job_manager.py`: cycle de vie des jobs, progression, erreurs, retry.
-- `billing.py`: estimation des couts et conversion credits.
-- `subtitles.py`, `hooks.py`, `thumbnail.py`, `editor.py`: modules media (sous-titres, overlays, miniatures, edition).
-- `supabase_request.py`, `supabase_media.py`: acces data Supabase.
-- `s3_uploader.py`: upload, suppression et URL signees S3.
-- `dashboard/`: UI utilisateur (React/Vite/Tailwind).
-- `render-service/` et `remotion/`: rendu video web/service.
-- `supabase/migrations/`: migrations base de donnees.
+- `app.py`: main API and orchestration of backend jobs.
+- `main.py`: video processing, splitting, analysis and clip generation.
+- `job_manager.py`: job lifecycle, progress, errors, retry.
+- `billing.py`: cost estimation and credit conversion.
+- `subtitles.py`, `hooks.py`, `thumbnail.py`, `editor.py`: media modules (subtitles, overlays, thumbnails, editing).
+- `supabase_request.py`, `supabase_media.py`: Supabase data access.
+- `s3_uploader.py`: S3 upload, deletion and signed URLs.
+- `dashboard/`: user UI (React/Vite/Tailwind).
+- `render-service/` and `remotion/`: web/service video rendering.
+- `supabase/migrations/`: database migrations.
 
-## Fonctionnalites principales
+## Main features
 
 ### Backend
 
-- Gestion de jobs asynchrones avec priorites et retries.
-- Generation de clips avec metadata et persistance media.
-- Generation et burn de sous-titres.
-- Gestion de credits et couts d'operation.
-- Persistance projets/reels/captions et historique.
-- Integrations stockage S3 + base Supabase.
+- Asynchronous job management with priorities and retries.
+- Clip generation with metadata and media persistence.
+- Subtitle generation and burn-in.
+- Management of credits and operation costs.
+- Persistence of projects/reels/captions and history.
+- S3 storage + Supabase database integrations.
 
 ### Dashboard
 
-- Parcours de creation de reels/sous-titres.
-- Parametrage (style sous-titres, options publication, comptes sociaux).
-- Visualisation d'etat des jobs et contenus generes.
+- Reel/subtitle creation flow.
+- Settings (subtitle style, publishing options, social accounts).
+- Display of job status and generated content.
 
-### IA / Media
+### AI / Media
 
-- Analyse et suggestions IA (selon fournisseur configure).
-- Generation d'assets (thumbnails, hooks, descriptions).
-- Outils de rendu video et post-traitement FFmpeg.
+- AI analysis and suggestions (depending on the configured provider).
+- Asset generation (thumbnails, hooks, descriptions).
+- Video rendering tools and FFmpeg post-processing.
 
 ## Configuration
 
-La configuration repose principalement sur les variables d'environnement.
+Configuration relies mainly on environment variables.
 
-Exemples de familles de variables:
+Examples of variable groups:
 
-- Secrets application (`SECRET_KEY`, etc.)
+- Application secrets (`SECRET_KEY`, etc.)
 - Supabase (`SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, tables)
 - AWS (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_S3_BUCKET`, region)
-- IA (`GEMINI_API_KEY`, modeles, autres providers)
-- Facturation/credits (prix unitaires, majoration)
-- Limites operationnelles (duree max, timeouts)
-- Retention des medias (voir ci-dessous)
+- AI (`GEMINI_API_KEY`, models, other providers)
+- Billing/credits (unit prices, markup)
+- Operational limits (max duration, timeouts)
+- Media retention (see below)
 
-Variables requises au demarrage du backend (l'app refuse de demarrer si elles sont absentes, hors execution des tests) :
+Variables required at backend startup (the app refuses to start if they are missing, except when running tests):
 
-- `SUPABASE_JWT_SECRET` : secret JWT du projet Supabase (Project Settings -> API -> JWT Secret), utilise pour verifier les tokens de session envoyes par le frontend (`Authorization: Bearer ...`). C'est la seule source de verite pour l'identite d'un utilisateur cote backend.
-- `ENCRYPTION_KEY` : cle (16 caracteres minimum) utilisee pour chiffrer (AES-256-GCM) les tokens OAuth des reseaux sociaux stockes en base.
-- `RENDER_SERVICE_API_KEY` : cle interne partagee entre le backend et le render-service (Remotion), verifiee sur chaque appel a `/render`. A definir aussi dans l'environnement du service `renderer` (docker-compose).
+- `SUPABASE_JWT_SECRET`: JWT secret of the Supabase project (Project Settings -> API -> JWT Secret), used to verify the session tokens sent by the frontend (`Authorization: Bearer ...`). It is the single source of truth for a user's identity on the backend side.
+- `ENCRYPTION_KEY`: key (16 characters minimum) used to encrypt (AES-256-GCM) the social network OAuth tokens stored in the database.
+- `RENDER_SERVICE_API_KEY`: internal key shared between the backend and the render-service (Remotion), checked on every call to `/render`. Must also be set in the environment of the `renderer` service (docker-compose).
 
-### Retention des medias
+### Media retention
 
-Vireel ne vend plus de quota de stockage (en Go) a l'utilisateur -- seuls les
-credits sont factures. En interne, chaque media (source importe ou produit
-genere) a neanmoins une duree de conservation physique en S3, fixee
-*definitivement* au moment de sa creation selon le statut d'abonnement de
-l'utilisateur a cet instant precis (un changement ulterieur d'abonnement ou
-de ces variables n'affecte jamais un media deja cree). Voir `retention_config.py`
-pour la validation au demarrage (valeurs negatives/incoherentes refusees) et
-`app.py` pour les 3 traitements automatiques (expiration, notification avant
-expiration, nettoyage des fichiers temporaires).
+Vireel no longer sells storage quota (in GB) to the user -- only credits are
+billed. Internally, however, each media item (imported source or generated
+output) has a physical retention period in S3, set *permanently* when it is
+created, based on the user's subscription status at that exact moment (a later
+change of subscription or of these variables never affects an already created
+media item). See `retention_config.py` for the startup validation (negative or
+inconsistent values are rejected) and `app.py` for the 3 automated jobs
+(expiration, notification before expiration, cleanup of temporary files).
 
-Variables (voir `.env.example` pour les valeurs par defaut) :
+Variables (see `.env.example` for the default values):
 
-- `RETENTION_FREE_SOURCE_DAYS` / `RETENTION_FREE_PRODUCED_DAYS` : duree de
-  conservation (source / produit) sans abonnement actif.
-- `RETENTION_SUBSCRIBER_SOURCE_DAYS` / `RETENTION_SUBSCRIBER_PRODUCED_DAYS` :
-  duree de conservation (source / produit) avec abonnement actif.
-- `RETENTION_TEMP_FILES_HOURS` : duree de vie des fichiers de travail locaux
-  (frames/chunks FFmpeg, uploads, dossiers de job termines) -- une categorie
-  distincte, sans lien avec les durees ci-dessus.
-- `RETENTION_NOTIFICATION_HOURS_BEFORE` : delai d'avertissement avant la
-  suppression automatique d'un media produit (jamais pour un media source).
-- `S3_STORAGE_COST_PER_GB_DAY` : cout interne S3/Go/jour utilise pour
-  calculer le cout de retention ajoute a la facturation en credits (jamais
-  affiche separement a l'utilisateur).
+- `RETENTION_FREE_SOURCE_DAYS` / `RETENTION_FREE_PRODUCED_DAYS`: retention
+  period (source / output) without an active subscription.
+- `RETENTION_SUBSCRIBER_SOURCE_DAYS` / `RETENTION_SUBSCRIBER_PRODUCED_DAYS`:
+  retention period (source / output) with an active subscription.
+- `RETENTION_TEMP_FILES_HOURS`: lifetime of local working files
+  (FFmpeg frames/chunks, uploads, finished job folders) -- a separate
+  category, unrelated to the durations above.
+- `RETENTION_NOTIFICATION_HOURS_BEFORE`: warning delay before the
+  automatic deletion of an output media item (never for a source media item).
+- `S3_STORAGE_COST_PER_GB_DAY`: internal S3 cost per GB per day used to
+  compute the retention cost added to credit billing (never shown
+  separately to the user).
 
-## Lancement local
+## Running locally
 
-### Backend (racine)
+### Backend (root)
 
 ```zsh
 pip install -r requirements.txt
@@ -112,7 +111,7 @@ npm install
 npm run dev
 ```
 
-### Option Docker Compose
+### Docker Compose option
 
 ```zsh
 docker-compose up --build
@@ -133,33 +132,33 @@ cd dashboard
 npm test
 ```
 
-Des tests unitaires ont ete ajoutes sur les modules backend critiques et sur les utilitaires UI `dashboard/src/lib`.
+Unit tests have been added for the critical backend modules and for the `dashboard/src/lib` UI utilities.
 
-## Deploiement
+## Deployment
 
-Le repo contient des fichiers de compose pour differents environnements:
+The repo contains compose files for different environments:
 
 - `docker-compose.yml`
 - `docker-compose.staging.yml`
 - `docker-compose.prod.yml`
 
-Verifier les variables d'environnement et les migrations Supabase avant mise en production.
+Check the environment variables and the Supabase migrations before going to production.
 
-La migration `supabase/migrations/20261012_media_lifecycle_and_storage_quota_removal.sql`
-supprime `abonnement.stockage` et cree la table `media_assets` (registre du
-cycle de vie physique des medias -- voir la section "Retention des medias"
-ci-dessus). Aucun media historique n'est retroactivement rattache a cette
-table par cette migration (aucune DML de backfill) : un media cree avant son
-application n'a simplement pas de ligne `media_assets` et n'est donc jamais
-selectionne par les traitements d'expiration/notification -- un backfill
-delibere reste a faire separement si souhaite.
+The migration `supabase/migrations/20261012_media_lifecycle_and_storage_quota_removal.sql`
+drops `abonnement.stockage` and creates the `media_assets` table (registry of the
+physical lifecycle of media -- see the "Media retention" section
+above). No historical media is retroactively linked to this
+table by this migration (no backfill DML): a media item created before it was
+applied simply has no `media_assets` row and is therefore never
+selected by the expiration/notification jobs -- a deliberate backfill
+remains to be done separately if desired.
 
-## Notes et limites
+## Notes and limitations
 
-- Certaines integrations externes (IA, S3, Supabase, reseaux sociaux) necessitent des credentials valides.
-- Les performances dependent des ressources machine et de la nature des medias.
-- Les workflows AI/UGC evoluent par iteration et peuvent necessiter des ajustements metier.
+- Some external integrations (AI, S3, Supabase, social networks) require valid credentials.
+- Performance depends on machine resources and on the nature of the media.
+- The AI/UGC workflows evolve iteratively and may require business adjustments.
 
-## Historique de consolidation
+## Consolidation history
 
-Ce README remplace les anciens fichiers Markdown de suivi, checklists, guides et notes de travail pour simplifier la maintenance documentaire.
+This README replaces the former Markdown tracking files, checklists, guides and work notes to simplify documentation maintenance.

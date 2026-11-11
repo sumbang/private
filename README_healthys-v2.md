@@ -1,9 +1,9 @@
 # HEALTH'YS
 
-Plateforme de gestion medicale
+Medical management platform
 
-- Gestion des patients
-- Gestion des hopitaux
-- Gestion des médécins
-- Gestion des pharmacies
-- Gestion des labos
+- Patient management
+- Hospital management
+- Doctor management
+- Pharmacy management
+- Lab management

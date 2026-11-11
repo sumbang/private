@@ -1,8 +1,8 @@
 # wouri-v4-backend
-Backend Wouri TV 4
+Wouri TV 4 backend
 
-- Nouvelle architecture de developpement
-- Amélioration des performances et de la stabilité
-- Meilleure gestion des erreurs
-- Déploiement dans un environnement Docker
-- Suivi et évolution des performances
+- New development architecture
+- Improved performance and stability
+- Better error handling
+- Deployment in a Docker environment
+- Performance monitoring and evolution

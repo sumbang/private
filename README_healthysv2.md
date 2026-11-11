@@ -1,40 +1,40 @@
-# HEALTH’YS — socle consultation multi-établissement
+# HEALTH’YS — multi-facility consultation core
 
-HEALTH’YS organise l’accueil d’un patient, le paiement cash, la programmation et la consultation, puis les retours couverts dans le même établissement. Une identité patient unique permet un dossier partagé, consultable uniquement selon les autorisations temporaires effectives.
+HEALTH’YS organizes patient intake, cash payment, scheduling and consultation, then covered follow-up visits within the same facility. A single patient identity enables a shared record, which can only be viewed according to the temporary authorizations in effect.
 
-## Périmètre actif
+## Active scope
 
-- Administration des établissements, licences Stripe, offres, quotas et équipes.
-- Fiche patient unique, accueil infirmier, constantes et épisodes de prise en charge.
-- Tarifs, factures de soins, encaissements cash, reçus, restitutions et clôtures de caisse.
-- Programmation, report et réaffectation des visites, calendrier et file médecin.
-- Consultation, rapports versionnés et validés, prescriptions et documents privés MinIO.
-- Suivi couvert dans le même établissement, accès temporaires et audit.
-- Assistant Python/OpenAI facultatif selon l’offre : résumé, rédaction assistée et dictée.
-- Conservation configurable (30 ans par défaut), demandes de suppression et migration historique contrôlée.
+- Administration of facilities, Stripe licenses, plans, quotas and teams.
+- Single patient record, nursing intake, vital signs and care episodes.
+- Rates, care invoices, cash collections, receipts, refunds and cash register closings.
+- Scheduling, postponement and reassignment of visits, calendar and doctor queue.
+- Consultation, versioned and validated reports, prescriptions and private MinIO documents.
+- Covered follow-up within the same facility, temporary access and audit.
+- Optional Python/OpenAI assistant depending on the plan: summary, assisted writing and dictation.
+- Configurable retention (30 years by default), deletion requests and controlled historical migration.
 
-La téléconsultation, le carnet mère-enfant, la messagerie, l’exploitation laboratoire, la dispensation et les stocks pharmacie sont hors du périmètre actuel. Les données et migrations historiques sont conservées pour préserver l’historique et permettre la bascule ; elles ne doivent pas réactiver ces parcours.
+Teleconsultation, the mother-child health record, messaging, laboratory operations, dispensing and pharmacy stock are outside the current scope. Historical data and migrations are kept to preserve history and allow the switchover; they must not reactivate these flows.
 
 ## Stack
 
-Java 21, Spring Boot/Modulith, PostgreSQL/Flyway, Keycloak, MinIO ; frontend React/Vite/TypeScript ; service IA Python/OpenAI privé. Les paiements des patients sont exclusivement cash. Stripe concerne les abonnements établissements.
+Java 21, Spring Boot/Modulith, PostgreSQL/Flyway, Keycloak, MinIO; React/Vite/TypeScript frontend; private Python/OpenAI AI service. Patient payments are exclusively cash. Stripe is used for facility subscriptions.
 
 ## Guides
 
-- [Socle et découpage](docs/consultation-core-refactor.md)
-- [Administration et licences](docs/PHASE2_LICENSING_API.md)
-- [Patient et prise en charge](docs/PHASE3_PATIENT_CARE.md)
-- [Facturation cash](docs/PHASE4_CASH_BILLING.md)
-- [Programmation et file](docs/PHASE4_PROGRAMMING_QUEUE.md)
-- [Consultation et suivi](docs/PHASE5_CONSULTATION_FOLLOW_UP.md)
-- [Contrôle de caisse](docs/PHASE5_CASH_REGISTER.md)
-- [Assistant IA](docs/PHASE6_AI_ASSISTANT.md)
-- [Conservation, migration et livraison](docs/PHASE7_RELEASE.md)
-- [Nettoyage du périmètre](docs/SCOPE_CLEANUP.md)
-- [Thème Keycloak](docs/keycloak-theme.md) et [inscription professionnelle](docs/professional-registration.md)
+- [Core and breakdown](docs/consultation-core-refactor.md)
+- [Administration and licenses](docs/PHASE2_LICENSING_API.md)
+- [Patient and care](docs/PHASE3_PATIENT_CARE.md)
+- [Cash billing](docs/PHASE4_CASH_BILLING.md)
+- [Scheduling and queue](docs/PHASE4_PROGRAMMING_QUEUE.md)
+- [Consultation and follow-up](docs/PHASE5_CONSULTATION_FOLLOW_UP.md)
+- [Cash register control](docs/PHASE5_CASH_REGISTER.md)
+- [AI assistant](docs/PHASE6_AI_ASSISTANT.md)
+- [Retention, migration and delivery](docs/PHASE7_RELEASE.md)
+- [Scope cleanup](docs/SCOPE_CLEANUP.md)
+- [Keycloak theme](docs/keycloak-theme.md) and [professional registration](docs/professional-registration.md)
 
-## Bascule pilote
+## Pilot switchover
 
-Le mode livré reste `LEGACY` jusqu’à validation de la migration et du parcours cash sans IA. Les commandes de l’ancien parcours consultation deviennent indisponibles après activation contrôlée ; l’historique reste consultable. Exécuter les intégrations PostgreSQL natif et une restauration PostgreSQL/MinIO isolée avant cette activation, selon le guide de Phase 7.
+The shipped mode remains `LEGACY` until the migration and the cash flow without AI have been validated. The commands of the former consultation flow become unavailable after controlled activation; the history remains viewable. Run the native PostgreSQL integration tests and an isolated PostgreSQL/MinIO restore before this activation, following the Phase 7 guide.
 
-La [documentation mobile précédente](docs/archive/PREVIOUS_MOBILE_FEATURES.md) est archivée et ne décrit pas le périmètre actif de cette version.
+The [previous mobile documentation](docs/archive/PREVIOUS_MOBILE_FEATURES.md) is archived and does not describe the active scope of this version.
