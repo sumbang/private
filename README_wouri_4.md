@@ -1,76 +1,76 @@
 # Wouri TV (v4)
 
-Application **Flutter** de **Wouri TV**, « le carrefour des cinémas d'Afrique » : une plateforme
-de vidéo à la demande proposant films et séries africains. Cette version 4.x consomme l'API
-REST du backend Wouri TV et cible le mobile (Android / iOS), la tablette et le web, avec des
-écrans dédiés à chaque format.
+**Flutter** app for **Wouri TV**, "the crossroads of African cinemas": a video-on-demand
+platform offering African films and series. This 4.x version consumes the
+Wouri TV backend REST API and targets mobile (Android / iOS), tablet and web, with
+dedicated screens for each form factor.
 
-Public visé : les spectateurs de Wouri TV.
+Intended audience: Wouri TV viewers.
 
-## Fonctionnalités principales
+## Main features
 
-- **Compte utilisateur** : onboarding, inscription, connexion, activation du compte par code,
-  réinitialisation et changement de mot de passe, profil, suppression du compte, aide.
-- **Catalogue** : carrousel de mise en avant, nouveautés, contenus Wouri, films achetés,
-  films aimés, films, séries, boutique, recherche.
-- **Fiche film** : détail du contenu, bande-annonce, notation et « j'aime », ajout à
-  « Ma liste », partage.
-- **Lecture vidéo** : lecteur plein écran (mobile et web), enregistrement de la progression
-  de lecture, diffusion vers un téléviseur (cast), écran maintenu allumé pendant la lecture.
-- **Téléchargements** : téléchargement des films pour un visionnage hors ligne et lecteur
-  hors ligne.
-- **Abonnements et achats** : formules d'abonnement, initialisation d'un paiement et
-  commande, historique des abonnements et des achats.
-- **Codes de visionnage** : activation d'un code donnant accès à des contenus.
-- **Connexion TV** : consultation du téléviseur associé au compte.
-- **Notifications** push (Firebase Cloud Messaging) et centre de notifications.
-- Mises en page adaptées mobile, tablette et web (portrait / paysage), interface bilingue
-  **français / anglais**, invitation aux mises à jour de l'application.
+- **User account**: onboarding, sign-up, sign-in, account activation by code,
+  password reset and change, profile, account deletion, help.
+- **Catalog**: featured carousel, new releases, Wouri content, purchased films,
+  liked films, films, series, store, search.
+- **Film page**: content details, trailer, ratings and "likes", adding to
+  "My List", sharing.
+- **Video playback**: full-screen player (mobile and web), saving of playback
+  progress, casting to a TV, screen kept awake during playback.
+- **Downloads**: film downloads for offline viewing and an offline
+  player.
+- **Subscriptions and purchases**: subscription plans, payment initialization and
+  ordering, history of subscriptions and purchases.
+- **Viewing codes**: activation of a code that grants access to content.
+- **TV connection**: viewing the TV linked to the account.
+- Push **notifications** (Firebase Cloud Messaging) and notification center.
+- Layouts adapted to mobile, tablet and web (portrait / landscape), bilingual
+  **French / English** interface, app update prompts.
 
-## Stack technique
+## Tech stack
 
 - Flutter / Dart (SDK `>=2.19.6 <3.0.0`)
-- Gestion d'état : Riverpod (`hooks_riverpod`, `flutter_hooks`), GetX ; injection `get_it`
-- Réseau : `dio`
-- Vidéo : `video_player`, `flutter_cast_video`, `wakelock_plus` ; paquet local
-  `smooth_video_progress` (dossier `dependencies/`)
-- Stockage local : Hive, sqflite, shared_preferences ; téléchargements : `flutter_downloader`
-- Chiffrement : `encrypt`, `crypto`
-- Firebase : Core, Messaging, Analytics, Crashlytics, Performance
-- Internationalisation : `flutter_localizations`, fichiers ARB (`lib/l10n`)
-- CI : GitHub Actions (`flutter test --coverage`, analyse de qualité)
+- State management: Riverpod (`hooks_riverpod`, `flutter_hooks`), GetX; `get_it` dependency injection
+- Networking: `dio`
+- Video: `video_player`, `flutter_cast_video`, `wakelock_plus`; local package
+  `smooth_video_progress` (`dependencies/` folder)
+- Local storage: Hive, sqflite, shared_preferences; downloads: `flutter_downloader`
+- Encryption: `encrypt`, `crypto`
+- Firebase: Core, Messaging, Analytics, Crashlytics, Performance
+- Internationalization: `flutter_localizations`, ARB files (`lib/l10n`)
+- CI: GitHub Actions (`flutter test --coverage`, quality analysis)
 
-## Structure du projet
+## Project structure
 
 ```
 lib/
-├── main.dart / main_web.dart   # points d'entrée mobile/tablette et web
-├── core/                       # paramètres, notifications push, SQLite, singletons, utilitaires
+├── main.dart / main_web.dart   # mobile/tablet and web entry points
+├── core/                       # settings, push notifications, SQLite, singletons, utilities
 ├── data/
-│   ├── api/remote_api.dart     # client de l'API REST Wouri TV
-│   ├── models/                 # requêtes et réponses
-│   └── repository/             # implémentations des dépôts
-├── domain/                     # entités, interfaces des dépôts, cas d'usage (auth, compte, films, paiement)
+│   ├── api/remote_api.dart     # Wouri TV REST API client
+│   ├── models/                 # requests and responses
+│   └── repository/             # repository implementations
+├── domain/                     # entities, repository interfaces, use cases (auth, account, films, payment)
 ├── presentation/
-│   ├── components/             # widgets et view models réutilisables
-│   └── screens/                # écrans mobile/, tablette/, web/ et common/ (lecteurs, paiement…)
-└── l10n/                       # traductions (fr, en)
-dependencies/smooth_video_progress/   # paquet Flutter local
-assets/, img/                   # polices et images
+│   ├── components/             # reusable widgets and view models
+│   └── screens/                # mobile/, tablette/, web/ and common/ screens (players, payment…)
+└── l10n/                       # translations (fr, en)
+dependencies/smooth_video_progress/   # local Flutter package
+assets/, img/                   # fonts and images
 android/, ios/, web/, macos/, linux/, windows/
 ```
 
-## Installation et lancement
+## Installation and running
 
-Prérequis : Flutter SDK compatible avec Dart 2.19.6 (< 3.0), Android Studio et/ou Xcode.
+Prerequisites: Flutter SDK compatible with Dart 2.19.6 (< 3.0), Android Studio and/or Xcode.
 
 ```bash
 flutter pub get
-flutter run                                   # mobile / tablette (lib/main.dart)
-flutter run -d chrome -t lib/main_web.dart    # version web
+flutter run                                   # mobile / tablet (lib/main.dart)
+flutter run -d chrome -t lib/main_web.dart    # web version
 ```
 
-Tests :
+Tests:
 
 ```bash
 flutter test
@@ -78,6 +78,6 @@ flutter test
 
 ## Configuration
 
-Aucun fichier `.env.example` n'est fourni. L'application s'appuie sur la configuration
-Firebase des projets plateformes et de `lib/firebase_options.dart`, ainsi que sur les
-paramètres de `lib/core/setting.dart`.
+No `.env.example` file is provided. The app relies on the Firebase configuration
+of the platform projects and `lib/firebase_options.dart`, as well as on the
+settings in `lib/core/setting.dart`.

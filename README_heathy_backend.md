@@ -1,100 +1,100 @@
-# Health'ys – Back-office et API (Yii 2)
+# Health'ys – Back office and API (Yii 2)
 
-Back-end PHP de la plateforme de santé **Health'ys**. Le projet regroupe :
+PHP back end of the **Health'ys** healthcare platform. The project includes:
 
-- un **back-office web** d'administration (patients, médecins, partenaires, abonnements,
-  cartes digitales santé, consultations, vaccination…) destiné aux administrateurs de la
-  plateforme et aux établissements de santé ;
-- une **API REST** (`api/`, module `v1`) consommée par les applications mobiles Health'ys
-  (patients et médecins).
+- a web administration **back office** (patients, doctors, partners, subscriptions,
+  digital health cards, consultations, vaccination…) for platform administrators
+  and healthcare facilities;
+- a **REST API** (`api/`, `v1` module) consumed by the Health'ys mobile apps
+  (patients and doctors).
 
-Le projet est construit à partir du gabarit *Yii 2 Basic Project Template*.
+The project is built from the *Yii 2 Basic Project Template*.
 
-## Fonctionnalités principales
+## Main features
 
-**Back-office web** (menus selon le rôle de l'utilisateur connecté)
-- Tableau de bord
-- Administration : patients, médecins, revendeurs, comptes, profils
-- Entités : partenaires (hôpitaux, pharmacies, laboratoires…), annuaire, affectation de médecins,
-  entreprises, personnel et personnel médical, infirmières
-- Abonnements : offres, codes d'abonnement, souscriptions, recharges de compte, paiements,
-  ventes et commissions
-- Cartes digitales santé : création, affectation, activation, vente, export / impression PDF avec QR code
-- Paramètres : spécialités, pays, actualités
-- Production : consultations, rendez-vous médicaux, certificats médicaux,
-  programmes et planning de vaccination, vaccins enregistrés
-- Rapports de consultation en PDF, réinitialisation de mot de passe par e-mail,
-  envoi de SMS (Twilio), pages de souscription / paiement en ligne
+**Web back office** (menus depend on the logged-in user's role)
+- Dashboard
+- Administration: patients, doctors, resellers, accounts, profiles
+- Entities: partners (hospitals, pharmacies, laboratories…), directory, doctor assignment,
+  companies, staff and medical staff, nurses
+- Subscriptions: plans, subscription codes, sign-ups, account top-ups, payments,
+  sales and commissions
+- Digital health cards: creation, assignment, activation, sale, PDF export / printing with QR code
+- Settings: specialties, countries, news
+- Operations: consultations, medical appointments, medical certificates,
+  vaccination programs and schedules, recorded vaccines
+- PDF consultation reports, password reset by email,
+  SMS sending (Twilio), online sign-up / payment pages
 
-**API REST v1** (`api/modules/v1/controllers`)
-- `compte` : connexion / déconnexion, création et mise à jour de compte, réinitialisation
-  du mot de passe, profil, paramètres médicaux et antécédents, informations d'urgence,
-  upload de documents, abonnements et souscriptions, recherche de patients et de médecins
-- `consultation` : création et mise à jour de consultations, dossier médical, rapports,
-  certificats, documents, consultations côté médecin et côté patient
-- `vaccin` : vaccins et programmes de vaccination
-- `meeting` : rendez-vous (création, confirmation, rejet)
-- `partner` : partenaires et entreprises
-- `new` : actualités
+**REST API v1** (`api/modules/v1/controllers`)
+- `compte`: login / logout, account creation and update, password reset,
+  profile, medical parameters and past medical history, emergency information,
+  document upload, subscriptions and sign-ups, patient and doctor search
+- `consultation`: consultation creation and update, medical record, reports,
+  certificates, documents, doctor-side and patient-side consultations
+- `vaccin`: vaccines and vaccination programs
+- `meeting`: appointments (creation, confirmation, rejection)
+- `partner`: partners and companies
+- `new`: news
 
-## Stack technique
+## Tech stack
 
-- **PHP** (>= 5.6 selon `composer.json` ; image Docker `yiisoftware/yii2-php:7.1-apache`)
-- **Yii 2** (`yiisoft/yii2 ~2.0.14`), base de données **MySQL**
-- Interface d'administration : `yiister/yii2-gentelella`, `hail812/yii2-adminlte3`,
+- **PHP** (>= 5.6 per `composer.json`; Docker image `yiisoftware/yii2-php:7.1-apache`)
+- **Yii 2** (`yiisoft/yii2 ~2.0.14`), **MySQL** database
+- Admin UI: `yiister/yii2-gentelella`, `hail812/yii2-adminlte3`,
   `ramosisw/yii2-material-dashboard`, `yiisoft/yii2-bootstrap`, `yiisoft/yii2-jui`
-- PDF : `kartik-v/yii2-mpdf` ; QR codes : `chillerlan/php-qrcode`, `2amigos/qrcode-library`
-- E-mail : `yiisoft/yii2-swiftmailer` ; SMS : `twilio/sdk`
-- Tests : Codeception (`codeception.yml`, `tests/`)
+- PDF: `kartik-v/yii2-mpdf`; QR codes: `chillerlan/php-qrcode`, `2amigos/qrcode-library`
+- Email: `yiisoft/yii2-swiftmailer`; SMS: `twilio/sdk`
+- Tests: Codeception (`codeception.yml`, `tests/`)
 
-## Structure du projet
+## Project structure
 
 ```
-api/            # Application API REST (config/api.php, modules/v1/controllers)
-assets/         # Définition des bundles d'assets
-commands/       # Commandes console
+api/            # REST API application (config/api.php, modules/v1/controllers)
+assets/         # Asset bundle definitions
+commands/       # Console commands
 config/         # Configuration (web.php, console.php, db.php, params.php, test*.php)
-controllers/    # Contrôleurs du back-office web
-mail/           # Gabarits d'e-mails
-messages/       # Traductions
-migrations/     # Migrations de base de données
-models/         # Modèles ActiveRecord et modèles de recherche
-views/          # Vues du back-office (une par module + layouts/)
-web/            # Point d'entrée web (index.php) et ressources publiques
+controllers/    # Web back-office controllers
+mail/           # Email templates
+messages/       # Translations
+migrations/     # Database migrations
+models/         # ActiveRecord models and search models
+views/          # Back-office views (one per module + layouts/)
+web/            # Web entry point (index.php) and public assets
 widgets/        # Widgets
-uploads/        # Fichiers téléversés
-tests/          # Tests Codeception (unit, functional, acceptance)
-docker-compose.yml, Vagrantfile   # Environnements de développement
+uploads/        # Uploaded files
+tests/          # Codeception tests (unit, functional, acceptance)
+docker-compose.yml, Vagrantfile   # Development environments
 ```
 
-## Installation et lancement
+## Installation and running
 
-Installation des dépendances :
+Install dependencies:
 
 ```bash
 composer install
 ```
 
-Base de données : créer une base MySQL, renseigner la connexion dans `config/db.php`, puis :
+Database: create a MySQL database, set the connection in `config/db.php`, then:
 
 ```bash
 php yii migrate
 ```
 
-Lancement en local :
+Running locally:
 
 ```bash
-php yii serve            # back-office sur http://localhost:8080
+php yii serve            # back office at http://localhost:8080
 ```
 
-Avec Docker :
+With Docker:
 
 ```bash
 docker-compose run --rm php composer install
-docker-compose up -d     # application accessible sur http://127.0.0.1:8000
+docker-compose up -d     # app available at http://127.0.0.1:8000
 ```
 
-Tests :
+Tests:
 
 ```bash
 vendor/bin/codecept run
@@ -102,12 +102,11 @@ vendor/bin/codecept run
 
 ## Configuration
 
-Aucun fichier `.env.example` n'est fourni : la configuration se fait dans les fichiers PHP de `config/` :
+No `.env.example` file is provided: configuration is done in the PHP files under `config/`:
 
-- `config/db.php` : connexion à la base de données MySQL
-- `config/web.php` : configuration du back-office (clé de validation des cookies, mailer, URL)
-- `api/config/api.php` : configuration de l'API (règles REST, mailer)
-- `config/params.php` : paramètres applicatifs
+- `config/db.php`: MySQL database connection
+- `config/web.php`: back-office configuration (cookie validation key, mailer, URL)
+- `api/config/api.php`: API configuration (REST rules, mailer)
+- `config/params.php`: application parameters
 
-Ne versionnez pas de mots de passe ni de clés dans ces fichiers ; utilisez des valeurs propres
-à chaque environnement.
+Do not commit passwords or keys in these files; use environment-specific values.

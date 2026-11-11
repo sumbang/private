@@ -1,77 +1,77 @@
-# Joodi — application cliente
+# Joodi — client app
 
-Application **Flutter** de **Joodi**, plateforme de films radiophoniques et de podcasts africains.
-Elle permet aux auditeurs de découvrir le catalogue, d'écouter les contenus en streaming ou
-hors ligne, et de gérer leur compte et leurs abonnements. Le même code produit l'application
-mobile (Android / iOS) et une version web.
+**Flutter** app for **Joodi**, a platform for African radio dramas and podcasts.
+It lets listeners discover the catalog, listen to content via streaming or
+offline, and manage their account and subscriptions. The same codebase produces the mobile
+app (Android / iOS) and a web version.
 
-Public visé : les auditeurs de Joodi.
+Intended audience: Joodi listeners.
 
-## Fonctionnalités principales
+## Main features
 
-- **Accueil et découverte** : carrousel de mise en avant, rubriques de contenus, catégories,
-  recherche, fiche détaillée d'un podcast et de ses épisodes, boutique (web).
-- **Lecteur audio** : lecture en streaming avec mini-lecteur et lecteur plein écran, lecture
-  en arrière-plan et contrôle depuis les notifications système.
-- **Hors ligne** : téléchargement des épisodes et lecture des contenus téléchargés ; cache
-  local des réponses de l'API.
-- **Compte utilisateur** : onboarding, inscription, connexion, activation par code,
-  réinitialisation et changement de mot de passe, profil, suppression du compte, choix de
-  la langue.
-- **Abonnements et achats** : consultation des formules, initialisation d'un paiement
-  (ouverture de la page de paiement Joodi dans le navigateur), codes promo, historique des
-  abonnements et des achats.
-- **Ma liste**, notation et « j'aime » des contenus, partage.
-- **Notifications** push (Firebase Cloud Messaging) et centre de notifications.
-- Détection de la connectivité réseau et invitation aux mises à jour de l'application.
-- Interface bilingue **français / anglais**.
+- **Home and discovery**: featured carousel, content sections, categories,
+  search, podcast and episode detail pages, store (web).
+- **Audio player**: streaming playback with a mini player and a full-screen player, background
+  playback and control from system notifications.
+- **Offline**: episode downloads and playback of downloaded content; local
+  cache of API responses.
+- **User account**: onboarding, sign-up, sign-in, activation by code,
+  password reset and change, profile, account deletion, language
+  selection.
+- **Subscriptions and purchases**: browsing plans, payment initialization
+  (opens the Joodi payment page in the browser), promo codes, history of
+  subscriptions and purchases.
+- **My List**, ratings and "likes" on content, sharing.
+- Push **notifications** (Firebase Cloud Messaging) and notification center.
+- Network connectivity detection and app update prompts.
+- Bilingual **French / English** interface.
 
-## Stack technique
+## Tech stack
 
 - Flutter / Dart (SDK `>=3.1.5 <4.0.0`)
-- Gestion d'état : Riverpod (`hooks_riverpod`, `flutter_hooks`), GetX ; injection `get_it`
-- Réseau : `dio`, `http`
-- Audio / vidéo : `just_audio`, `just_audio_background`, `video_player`
-- Stockage local : Hive, sqflite, shared_preferences ; téléchargements : `flutter_downloader`
-- Firebase : Core, Messaging, Analytics, Crashlytics, Performance
-- Internationalisation : `flutter_localizations`, fichiers ARB (`lib/l10n`)
-- CI : GitHub Actions (`flutter test --coverage`, analyse de qualité)
+- State management: Riverpod (`hooks_riverpod`, `flutter_hooks`), GetX; `get_it` dependency injection
+- Networking: `dio`, `http`
+- Audio / video: `just_audio`, `just_audio_background`, `video_player`
+- Local storage: Hive, sqflite, shared_preferences; downloads: `flutter_downloader`
+- Firebase: Core, Messaging, Analytics, Crashlytics, Performance
+- Internationalization: `flutter_localizations`, ARB files (`lib/l10n`)
+- CI: GitHub Actions (`flutter test --coverage`, quality analysis)
 
-## Structure du projet
+## Project structure
 
 ```
 lib/
-├── main.dart / main_web.dart   # points d'entrée mobile et web
-├── core/                       # configuration, notifications push, connectivité, SQLite, singletons
-├── audio/                      # widgets et contrôles du lecteur audio (mobile et web)
-├── data/                       # appels API, modèles de requêtes/réponses, implémentations des dépôts
-├── domain/                     # entités, interfaces des dépôts, cas d'usage (auth, compte, contenus, paiement)
+├── main.dart / main_web.dart   # mobile and web entry points
+├── core/                       # configuration, push notifications, connectivity, SQLite, singletons
+├── audio/                      # audio player widgets and controls (mobile and web)
+├── data/                       # API calls, request/response models, repository implementations
+├── domain/                     # entities, repository interfaces, use cases (auth, account, content, payment)
 ├── presentation/
-│   ├── components/             # widgets et view models réutilisables
-│   └── screens/                # écrans mobile/, web/ et common/
-└── l10n/                       # traductions (fr, en)
-locale/                         # fichiers de traduction JSON
-assets/, img/                   # polices et images
-android/, ios/, web/, macos/, linux/, windows/   # projets plateformes
+│   ├── components/             # reusable widgets and view models
+│   └── screens/                # mobile/, web/ and common/ screens
+└── l10n/                       # translations (fr, en)
+locale/                         # JSON translation files
+assets/, img/                   # fonts and images
+android/, ios/, web/, macos/, linux/, windows/   # platform projects
 ```
 
-## Installation et lancement
+## Installation and running
 
-Prérequis : Flutter SDK compatible Dart 3.1.5+, Android Studio et/ou Xcode.
+Prerequisites: Flutter SDK compatible with Dart 3.1.5+, Android Studio and/or Xcode.
 
 ```bash
 flutter pub get
-flutter run                          # mobile (point d'entrée lib/main.dart)
-flutter run -d chrome -t lib/main_web.dart   # version web
+flutter run                          # mobile (entry point lib/main.dart)
+flutter run -d chrome -t lib/main_web.dart   # web version
 ```
 
-Génération des adaptateurs Hive si les modèles changent :
+Generating Hive adapters when models change:
 
 ```bash
 dart run build_runner build
 ```
 
-Tests :
+Tests:
 
 ```bash
 flutter test
@@ -79,6 +79,6 @@ flutter test
 
 ## Configuration
 
-Aucun fichier `.env.example` n'est fourni. L'application s'appuie sur la configuration
-Firebase des projets plateformes (`google-services.json`, `GoogleService-Info.plist`,
-`lib/firebase_options.dart`) et sur les paramètres de `lib/core/setting.dart`.
+No `.env.example` file is provided. The app relies on the Firebase configuration
+of the platform projects (`google-services.json`, `GoogleService-Info.plist`,
+`lib/firebase_options.dart`) and on the settings in `lib/core/setting.dart`.

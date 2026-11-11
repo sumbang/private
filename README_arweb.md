@@ -1,81 +1,81 @@
-# arweb : back-office et API de suivi des maintenances d'équipements
+# arweb: back office and API for tracking equipment maintenance
 
-arweb est une application web de **suivi des opérations de maintenance** sur les équipements installés chez des clients. L'équipement est organisé par client, puis par adresse, par pièce et par élément. L'application comprend :
+arweb is a web application for **tracking maintenance operations** on equipment installed at customer sites. Equipment is organized by customer, then by address, room and item. The application includes:
 
-- un **back-office** pour les administrateurs : gestion des techniciens, des maintenances, des listes de contrôle, des utilisateurs, et consultation de la piste d'audit ;
-- une **API REST (v1)** pour l'application mobile des techniciens : connexion par code, consultation des équipements, enregistrement des interventions avec photos avant et après, et statistiques.
+- a **back office** for administrators: management of technicians, maintenance records, checklists and users, plus access to the audit trail;
+- a **REST API (v1)** for the technicians' mobile app: code-based login, equipment lookup, recording of interventions with before and after photos, and statistics.
 
-Public visé : les gestionnaires et administrateurs (back-office) et les techniciens de maintenance (via l'API).
+Intended audience: managers and administrators (back office) and maintenance technicians (through the API).
 
-## Fonctionnalités principales
+## Main features
 
-### Back-office
-- Connexion, déconnexion et profil de l'utilisateur.
-- **Accueil** : tableau de bord avec graphiques (Chart.js, Google Charts).
-- **Techniciens** : gestion des techniciens rattachés à une adresse client, avec un code secret et un statut de technicien principal.
-- **Maintenances** : liste, consultation, modification, suppression et **export** des maintenances réalisées. Chaque maintenance enregistre l'élément, le technicien, la date, la nature, le type, un commentaire et les images avant et après.
-- **Liste de maintenance** : référentiel des opérations de maintenance par catégorie et par nature.
-- **Piste d'audit** : journal des actions des techniciens (date, action, message, appareil).
-- **Utilisateurs** : gestion des comptes du back-office.
+### Back office
+- User login, logout and profile.
+- **Home**: dashboard with charts (Chart.js, Google Charts).
+- **Technicians**: management of technicians assigned to a customer address, with a secret code and a lead-technician flag.
+- **Maintenance**: list, view, edit, delete and **export** completed maintenance records. Each record stores the item, the technician, the date, the nature, the type, a comment and the before and after images.
+- **Maintenance list**: catalog of maintenance operations by category and nature.
+- **Audit trail**: log of technician actions (date, action, message, device).
+- **Users**: management of back-office accounts.
 
-### API REST v1 (`modules/api/v1`)
-- Authentification : `login`, `logout`, `secret`, `resetpwd`, `newpass`.
-- Données : `pieces`, `equipement`, `listes`, `list-maintenance`, `techniciens`.
-- Gestion des techniciens : `new-tech`, `remove-tech`.
-- Interventions : `new-maintenance`, envoi de photos (`uploader`, `uploader1`).
-- Statistiques : `stats`.
+### REST API v1 (`modules/api/v1`)
+- Authentication: `login`, `logout`, `secret`, `resetpwd`, `newpass`.
+- Data: `pieces`, `equipement`, `listes`, `list-maintenance`, `techniciens`.
+- Technician management: `new-tech`, `remove-tech`.
+- Interventions: `new-maintenance`, photo upload (`uploader`, `uploader1`).
+- Statistics: `stats`.
 
-### Modèle de données
-Les principales entités sont : clients, adresses, pièces, éléments (équipements avec photo et caractéristiques), catégories (avec la durée de maintenance), groupes, rôles, techniciens, maintenances, listes de maintenance et piste d'audit.
+### Data model
+The main entities are: customers, addresses, rooms, items (equipment with a photo and specifications), categories (with the maintenance interval), groups, roles, technicians, maintenance records, maintenance lists and the audit trail.
 
-## Stack technique
+## Tech stack
 
 - **PHP** >= 5.6
-- **Yii 2** (~2.0.14), gabarit « basic », avec un module API REST (`yii\rest`)
-- **Bootstrap 4** (`yii2-bootstrap4`) et **AdminLTE** (`dmstr/yii2-adminlte-asset`, `yidas/yii2-adminlte`)
-- Graphiques : **Chart.js** (`practically/yii2-chartjs`) et **Google Charts** (`scotthuangzl/yii2-google-chart`)
-- **yii2-swiftmailer** pour l'envoi d'e-mails
-- Base de données relationnelle (MySQL) via ActiveRecord
-- Tests : **Codeception** 4
+- **Yii 2** (~2.0.14), "basic" template, with a REST API module (`yii\rest`)
+- **Bootstrap 4** (`yii2-bootstrap4`) and **AdminLTE** (`dmstr/yii2-adminlte-asset`, `yidas/yii2-adminlte`)
+- Charts: **Chart.js** (`practically/yii2-chartjs`) and **Google Charts** (`scotthuangzl/yii2-google-chart`)
+- **yii2-swiftmailer** for sending e-mails
+- Relational database (MySQL) through ActiveRecord
+- Tests: **Codeception** 4
 
-## Structure du projet
+## Project structure
 
 ```
-assets/            Bundles d'assets
-commands/          Commandes console
-config/            Configuration (web, console, base de données, paramètres)
-controllers/       Contrôleurs du back-office (Site, Technicien, Maintenance, Maintenancelist, Piste, Compte)
-models/            Modèles ActiveRecord et modèles de recherche
-modules/api/v1/    Module API REST consommé par l'application mobile
-views/             Vues (layouts AdminLTE, écrans par entité)
-web/               Racine web publique
-widgets/           Widgets réutilisables
-tests/             Tests Codeception
+assets/            Asset bundles
+commands/          Console commands
+config/            Configuration (web, console, database, parameters)
+controllers/       Back-office controllers (Site, Technicien, Maintenance, Maintenancelist, Piste, Compte)
+models/            ActiveRecord models and search models
+modules/api/v1/    REST API module used by the mobile app
+views/             Views (AdminLTE layouts, per-entity screens)
+web/               Public web root
+widgets/           Reusable widgets
+tests/             Codeception tests
 ```
 
-## Installation et lancement
+## Installation and running
 
-1. Installer les dépendances :
+1. Install the dependencies:
    ```bash
    composer install
    ```
-2. Configurer la base de données dans `config/db.php` et le service d'envoi d'e-mails dans `config/web.php`.
-3. Lancer l'application :
-   - avec le serveur intégré de Yii :
+2. Configure the database in `config/db.php` and the e-mail service in `config/web.php`.
+3. Start the application:
+   - with the Yii built-in server:
      ```bash
      php yii serve
      ```
-   - ou avec Docker :
+   - or with Docker:
      ```bash
      docker-compose up -d
      ```
-     L'application est alors accessible sur `http://localhost:8000`.
-4. L'API est exposée par le module `apiV1` grâce aux règles REST définies dans `config/web.php` (URL « propres » activées).
-5. Lancer les tests :
+     The application is then available at `http://localhost:8000`.
+4. The API is exposed by the `apiV1` module through the REST rules defined in `config/web.php` (pretty URLs enabled).
+5. Run the tests:
    ```bash
    vendor/bin/codecept run
    ```
 
 ## Configuration
 
-Le dépôt ne contient pas de fichier `.env.example`. La configuration se fait dans les fichiers du dossier `config/` (`db.php`, `params.php`, `web.php`). Ne versionnez pas de mots de passe ni d'identifiants SMTP dans ces fichiers. Gardez-les plutôt dans un fichier local non suivi par Git ou dans des variables d'environnement.
+The repository does not include a `.env.example` file. Configuration lives in the files of the `config/` folder (`db.php`, `params.php`, `web.php`). Do not commit passwords or SMTP credentials to these files. Keep them instead in a local file not tracked by Git or in environment variables.

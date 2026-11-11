@@ -1,69 +1,69 @@
 # TSS Courses
 
-Application Flutter de formation en ligne **« Tss Performance, A chacun son tableau de bord »**. Elle permet aux apprenants inscrits de suivre des formations vidéo (organisées en chapitres et leçons), de consulter les cours gratuits et de télécharger les vidéos pour les regarder hors ligne. L'application est déclinée pour mobile, tablette, ordinateur (desktop) et web.
+Flutter e-learning app **"Tss Performance, A chacun son tableau de bord"**. It lets enrolled learners follow video courses (organized into chapters and lessons), browse free courses and download videos to watch offline. The app comes in mobile, tablet, desktop and web versions.
 
-## Fonctionnalités principales
+## Main features
 
-- Onboarding et connexion par adresse e-mail ou identifiant, déconnexion
-- Session limitée à un appareil : si un nouvel appareil se connecte avec le même compte, la session courante est fermée
-- **Mes cours** : formations auxquelles l'utilisateur est inscrit, avec leurs chapitres et leçons
-- **Cours gratuits**
-- Lecture vidéo en ligne (vidéos hébergées sur Vimeo) et suivi de progression (début / fin de chaque sujet envoyés au serveur)
-- **Téléchargements** : téléchargement des vidéos dans un format choisi, gestion de la file (pause, annulation, échec), lecture hors ligne, limite de 50 téléchargements
-- **Paramètres** : informations du compte, notifications, liens (à propos, politique de confidentialité, conditions d'utilisation, offres d'abonnement, contact), version de l'application
-- Mise en cache des réponses de l'API (Hive) pour un fonctionnement dégradé hors connexion
-- Notifications push (Firebase Cloud Messaging), Firebase Analytics, Crashlytics et Performance
-- Interface en français et en anglais ; mises en page dédiées mobile, tablette, PC et web
+- Onboarding and login by e-mail address or username, logout
+- Session limited to one device: if a new device logs in with the same account, the current session is closed
+- **My courses**: courses the user is enrolled in, with their chapters and lessons
+- **Free courses**
+- Online video playback (videos hosted on Vimeo) and progress tracking (start / end of each topic sent to the server)
+- **Downloads**: download videos in a chosen format, queue management (pause, cancel, failure), offline playback, limit of 50 downloads
+- **Settings**: account information, notifications, links (about, privacy policy, terms of use, subscription plans, contact), app version
+- Caching of API responses (Hive) for degraded offline operation
+- Push notifications (Firebase Cloud Messaging), Firebase Analytics, Crashlytics and Performance
+- French and English interface; dedicated layouts for mobile, tablet, PC and web
 
-## Stack technique
+## Tech stack
 
-- **Flutter** (SDK Dart `>=3.4.4 <4.0.0`)
-- Gestion d'état : `hooks_riverpod` / `flutter_hooks`, `get`, injection `get_it`
-- Réseau : `dio`
-- Stockage local : `hive` / `hive_flutter`, `sqflite`, `shared_preferences`, `path_provider`
-- Vidéo : `video_player`, `pod_player`, `flutter_cast_video`, `wakelock_plus`, paquet local `smooth_video_progress`
-- Téléchargements : `flutter_downloader`, `flutter_download_manager`
-- Firebase : core, messaging, analytics, crashlytics, performance
-- Internationalisation : `flutter_localizations`, `intl` (fichiers ARB)
-- Cibles : Android, iOS, web, Windows, macOS, Linux
+- **Flutter** (Dart SDK `>=3.4.4 <4.0.0`)
+- State management: `hooks_riverpod` / `flutter_hooks`, `get`, `get_it` dependency injection
+- Networking: `dio`
+- Local storage: `hive` / `hive_flutter`, `sqflite`, `shared_preferences`, `path_provider`
+- Video: `video_player`, `pod_player`, `flutter_cast_video`, `wakelock_plus`, local package `smooth_video_progress`
+- Downloads: `flutter_downloader`, `flutter_download_manager`
+- Firebase: core, messaging, analytics, crashlytics, performance
+- Internationalization: `flutter_localizations`, `intl` (ARB files)
+- Targets: Android, iOS, web, Windows, macOS, Linux
 
-## Structure du projet
+## Project structure
 
 ```
 lib/
-├── main.dart            # Point d'entrée mobile / tablette
-├── main_web.dart        # Point d'entrée web
-├── main_desktop.dart    # Point d'entrée desktop
-├── core/                # Réglages, thèmes, navigation, cache Hive, base SQLite, téléchargements, intégration Vimeo
+├── main.dart            # Mobile / tablet entry point
+├── main_web.dart        # Web entry point
+├── main_desktop.dart    # Desktop entry point
+├── core/                # Settings, themes, navigation, Hive cache, SQLite database, downloads, Vimeo integration
 ├── data/
-│   ├── api/             # Appels à l'API REST (remote_api.dart)
-│   ├── models/          # Modèles de requêtes / réponses (connexion, compte, formation, chapitre, leçon)
-│   └── repositories/    # Implémentation du dépôt de données
-├── domain/              # Entités, interface du dépôt, cas d'utilisation
+│   ├── api/             # REST API calls (remote_api.dart)
+│   ├── models/          # Request / response models (login, account, course, chapter, lesson)
+│   └── repositories/    # Data repository implementation
+├── domain/              # Entities, repository interface, use cases
 ├── presentation/
-│   ├── components/      # View models et widgets (cartes de cours, chapitres, leçons…)
-│   └── screens/         # Écrans par plateforme : mobile/, tablette/, pc/, web/, commons/ (lecteurs, onboarding)
-└── l10n/                # Traductions ARB (fr, en)
-dependencies/smooth_video_progress/  # Paquet Flutter local
-assets/, img/            # Polices et images
+│   ├── components/      # View models and widgets (course cards, chapters, lessons…)
+│   └── screens/         # Per-platform screens: mobile/, tablette/, pc/, web/, commons/ (players, onboarding)
+└── l10n/                # ARB translations (fr, en)
+dependencies/smooth_video_progress/  # Local Flutter package
+assets/, img/            # Fonts and images
 ```
 
-## Installation et lancement
+## Installation and running
 
-Prérequis : Flutter installé, ainsi qu'un projet Firebase configuré pour les plateformes ciblées.
+Prerequisites: Flutter installed, and a Firebase project configured for the target platforms.
 
 ```bash
 flutter pub get
 
-# Mobile / tablette
-flutter run --dart-define=API_KEY_VIMEO=<votre_cle>
+# Mobile / tablet
+flutter run --dart-define=API_KEY_VIMEO=<your_key>
 # Web
-flutter run -d chrome -t lib/main_web.dart --dart-define=API_KEY_VIMEO=<votre_cle>
+flutter run -d chrome -t lib/main_web.dart --dart-define=API_KEY_VIMEO=<your_key>
 # Desktop
-flutter run -d windows -t lib/main_desktop.dart --dart-define=API_KEY_VIMEO=<votre_cle>
+flutter run -d windows -t lib/main_desktop.dart --dart-define=API_KEY_VIMEO=<your_key>
 ```
 
-Tests :
+Tests:
 
 ```bash
 flutter test
@@ -71,10 +71,10 @@ flutter test
 
 ## Configuration
 
-Il n'y a pas de fichier `.env.example`. La valeur suivante est lue à la compilation via `String.fromEnvironment` :
+There is no `.env.example` file. The following value is read at build time via `String.fromEnvironment`:
 
-| Nom | Rôle |
+| Name | Purpose |
 | --- | --- |
-| `API_KEY_VIMEO` | Clé d'accès à l'API Vimeo pour récupérer les vidéos |
+| `API_KEY_VIMEO` | Vimeo API access key used to fetch the videos |
 
-L'URL de l'API backend est définie dans `lib/data/api/remote_api.dart`.
+The backend API URL is defined in `lib/data/api/remote_api.dart`.

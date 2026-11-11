@@ -1,67 +1,67 @@
 # Klooztumi
 
-Application mobile Flutter (Android / iOS) qui met en relation des **commerces de proximité** et leurs **clients** sous la forme d'un réseau social local. Les commerçants y présentent leur boutique, leurs produits et publient des actualités ; les clients découvrent les commerces autour d'eux, les suivent et interagissent avec leurs publications.
+Flutter mobile app (Android / iOS) that connects **local shops** with their **customers** in the form of a local social network. Merchants showcase their shop and products and publish news; customers discover nearby shops, follow them and interact with their posts.
 
-L'application est un client d'une API REST distante (authentification, commerces, produits, publications, utilisateurs).
+The app is a client of a remote REST API (authentication, shops, products, posts, users).
 
-## Fonctionnalités principales
+## Main features
 
-- **Onboarding** et écran de démarrage (splashscreen).
-- **Authentification** : connexion, rafraîchissement de jeton, mot de passe oublié, changement de mot de passe.
-- **Deux types de comptes** avec parcours dédiés :
-  - **Client** : inscription, fil d'actualité, liste des commerces suivis, contacts, gestion du compte.
-  - **Commerçant** : inscription, création d'un commerce (catégories, tags, adresse, coordonnées GPS, horaires d'ouverture, moyens de paiement, site web, bannière et photo de profil), gestion du catalogue de produits (ajout / modification), abonnement / fin d'abonnement.
-- **Publications (posts)** avec images : création, détail, commentaires, « j'aime » / « je n'aime plus », partage, suppression.
-- **Abonnements** : suivre / ne plus suivre un commerce, favoris, liste des abonnés et des abonnements d'un utilisateur.
-- **Recherche** de commerces ou de personnes, avec prise en compte de la position de l'utilisateur.
-- **Géolocalisation** (position courante via `geolocator`) et ouverture de l'itinéraire vers un commerce dans l'application de cartographie (`maps_launcher`).
-- **QR code** personnel (génération via `qr_flutter`, scan via `qrscan`).
-- Sélection / compression d'images, lecture de PDF, choix de fichiers.
-- Paramètres : notifications, thème d'affichage, politique de confidentialité, déconnexion.
-- Interface en français (fichiers de traduction `locale/i18n_fr.json` et `locale/i18n_en.json`).
+- **Onboarding** and splash screen.
+- **Authentication**: login, token refresh, forgotten password, password change.
+- **Two account types** with dedicated flows:
+  - **Customer**: sign-up, news feed, list of followed shops, contacts, account management.
+  - **Merchant**: sign-up, shop creation (categories, tags, address, GPS coordinates, opening hours, payment methods, website, banner and profile picture), product catalog management (add / edit), subscription / end of subscription.
+- **Posts** with images: creation, details, comments, like / unlike, sharing, deletion.
+- **Follows**: follow / unfollow a shop, favorites, list of a user's followers and followed accounts.
+- **Search** for shops or people, taking the user's location into account.
+- **Geolocation** (current position via `geolocator`) and opening directions to a shop in the maps app (`maps_launcher`).
+- Personal **QR code** (generated with `qr_flutter`, scanned with `qrscan`).
+- Image selection / compression, PDF viewing, file picking.
+- Settings: notifications, display theme, privacy policy, logout.
+- French-language interface (translation files `locale/i18n_fr.json` and `locale/i18n_en.json`).
 
-## Stack technique
+## Tech stack
 
-- **Flutter** / **Dart** (SDK `>=2.7.0 <3.0.0`, code antérieur au null-safety)
-- Principales dépendances : `http`, `shared_preferences`, `cached_network_image`, `image_picker`, `file_picker`, `flutter_image_compress`, `geolocator`, `flutter_map`, `maps_launcher`, `qr_flutter`, `qrscan`, `flutter_slidable`, `carousel_slider`, `flutter_pdfview`, `permission_handler`, `url_launcher`, `intl_phone_field`, `fluttertoast`, `font_awesome_flutter`
-- Icônes d'application générées avec `flutter_launcher_icons`
-- Identifiant Android : `com.apps.klooztumi` (minSdk 21)
+- **Flutter** / **Dart** (SDK `>=2.7.0 <3.0.0`, pre-null-safety code)
+- Main dependencies: `http`, `shared_preferences`, `cached_network_image`, `image_picker`, `file_picker`, `flutter_image_compress`, `geolocator`, `flutter_map`, `maps_launcher`, `qr_flutter`, `qrscan`, `flutter_slidable`, `carousel_slider`, `flutter_pdfview`, `permission_handler`, `url_launcher`, `intl_phone_field`, `fluttertoast`, `font_awesome_flutter`
+- App icons generated with `flutter_launcher_icons`
+- Android application ID: `com.apps.klooztumi` (minSdk 21)
 
-## Structure du projet
+## Project structure
 
 ```
 lib/
-├── main.dart          # Point d'entrée de l'application
-├── page/              # Écrans (connexion, inscription client/commerçant, accueil, détail commerce,
-│                      #   ajout/édition de produit, publication, recherche, paramètres, abonnement…)
-├── fragment/          # Onglets des écrans d'accueil client et commerçant (accueil, boutique,
-│                      #   produits, contacts, compte, paramètres)
-├── model/             # Modèles de données (User, Seller, Produit, Post, Comment, Tag,
+├── main.dart          # Application entry point
+├── page/              # Screens (login, customer/merchant sign-up, home, shop details,
+│                      #   product add/edit, post, search, settings, subscription…)
+├── fragment/          # Tabs of the customer and merchant home screens (home, shop,
+│                      #   products, contacts, account, settings)
+├── model/             # Data models (User, Seller, Produit, Post, Comment, Tag,
 │                      #   CategorieShop, HeureShop, LocationShop, PaymentMethod, Souscription…)
-├── block/             # Widgets réutilisables (aperçu de post, image, état vide)
-└── config/            # Configuration (URL de l'API dans Setting.dart), widgets communs, utilitaires
-assets/                # Polices (Candara, FontAwesome)
-img/                   # Images, logos et icônes
-locale/                # Fichiers de traduction JSON (fr, en)
-android/, ios/, web/   # Projets natifs / plateformes
+├── block/             # Reusable widgets (post preview, image, empty state)
+└── config/            # Configuration (API URL in Setting.dart), shared widgets, utilities
+assets/                # Fonts (Candara, FontAwesome)
+img/                   # Images, logos and icons
+locale/                # JSON translation files (fr, en)
+android/, ios/, web/   # Native / platform projects
 ```
 
-## Installation et lancement
+## Installation and running
 
-Prérequis : un SDK Flutter compatible avec Dart 2.x (version antérieure à Dart 3) et un émulateur ou un appareil Android / iOS.
+Prerequisites: a Flutter SDK compatible with Dart 2.x (a version earlier than Dart 3) and an Android / iOS emulator or device.
 
 ```bash
 flutter pub get
 flutter run
 ```
 
-Générer les icônes de l'application :
+Generate the app icons:
 
 ```bash
 flutter pub run flutter_launcher_icons:main
 ```
 
-Compiler une version de production :
+Build a production release:
 
 ```bash
 flutter build apk     # Android
@@ -70,4 +70,4 @@ flutter build ios     # iOS
 
 ## Configuration
 
-Aucun fichier `.env` n'est utilisé. L'URL de base de l'API REST est définie dans `lib/config/Setting.dart` (constante `Setting.apiracine`) ; adaptez-la à votre environnement avant de lancer l'application.
+No `.env` file is used. The REST API base URL is defined in `lib/config/Setting.dart` (constant `Setting.apiracine`); adjust it to your environment before running the app.

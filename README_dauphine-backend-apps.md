@@ -1,90 +1,90 @@
-# Dauphine : backend de gestion scolaire et de paiement des frais de scolarité
+# Dauphine: school management and tuition payment backend
 
-Application backend **Spring Boot** pour la gestion d'un établissement scolaire. Elle couvre les élèves, les classes (salles), les années scolaires (exercices) et les frais de scolarité payables par tranches. Elle propose :
+A **Spring Boot** backend application for managing a school. It covers students, classes (rooms), school years (fiscal years) and tuition fees payable in installments. It provides:
 
-- une **interface d'administration web** (Thymeleaf), protégée par Spring Security ;
-- une **API REST v1** sécurisée par **JWT**, destinée à une application mobile pour les parents. Les parents peuvent créer un compte, rattacher leurs enfants, consulter les frais et effectuer ou suivre des paiements.
+- a **web administration interface** (Thymeleaf), protected by Spring Security;
+- a **REST API v1** secured with **JWT**, intended for a mobile app for parents. Parents can create an account, link their children, view fees, and make or track payments.
 
-Public visé : l'administration de l'établissement (back-office) et les parents d'élèves (application mobile cliente de l'API).
+Intended audience: the school administration (back office) and parents (mobile app consuming the API).
 
-## Fonctionnalités principales
+## Main features
 
-### Back-office web
-- Connexion et déconnexion, page d'accès refusé, **tableau de bord**.
-- **Élèves** : liste paginée, création, modification, suppression. Une fiche contient le matricule, l'identité, la date et le lieu de naissance, ainsi que les coordonnées du père et de la mère.
-- **Import et export Excel** des élèves (Apache POI, format `.xlsx`).
-- **Salles** (classes) et **exercices** (années scolaires).
-- **Affectations** : rattachement d'un élève à une salle pour un exercice donné.
-- **Frais** de scolarité par salle et par exercice, découpés en **tranches** avec un montant par tranche.
-- **Utilisateurs** : gestion des comptes, consultation des enfants rattachés et des paiements de chaque utilisateur.
+### Web back office
+- Login and logout, access-denied page, **dashboard**.
+- **Students**: paginated list, creation, editing, deletion. A record contains the student ID number, identity, date and place of birth, and the father's and mother's contact details.
+- **Excel import and export** of students (Apache POI, `.xlsx` format).
+- **Rooms** (classes) and **fiscal years** (school years).
+- **Assignments**: linking a student to a room for a given school year.
+- Tuition **fees** per room and per school year, split into **installments** with an amount per installment.
+- **Users**: account management, viewing each user's linked children and payments.
 
-### API REST v1 (`/api/v1`)
-- **Authentification** (`/api/v1/auth`) : `signup`, `signin`, `signout`, `reset-pwd`, `change-pwd`, `check-token` et `current-year` (exercice en cours).
-- **Élèves** (`/api/v1/eleves`) : rattacher un enfant au compte du parent, lister ses enfants, supprimer un rattachement.
-- **Paiements** (`/api/v1/paiement`) : consulter les frais (`frais`), lister les paiements (`liste`), initialiser un paiement (`init`), le mettre à jour (`update`), le supprimer (`delete`) et consulter les `notifications`.
+### REST API v1 (`/api/v1`)
+- **Authentication** (`/api/v1/auth`): `signup`, `signin`, `signout`, `reset-pwd`, `change-pwd`, `check-token` and `current-year` (current school year).
+- **Students** (`/api/v1/eleves`): link a child to the parent's account, list their children, remove a link.
+- **Payments** (`/api/v1/paiement`): view fees (`frais`), list payments (`liste`), initialize a payment (`init`), update it (`update`), delete it (`delete`) and view `notifications`.
 
-## Stack technique
+## Tech stack
 
 - **Java** 8 (`sourceCompatibility = 1.8`)
-- **Spring Boot** 2.7.3 : Web, Web Services, Data JPA, Data REST, Validation, Security, Mail, DevTools
-- **Thymeleaf** avec le Layout Dialect et `thymeleaf-extras-springsecurity5`
-- **Bootstrap** 5.1.3 et **jQuery** 3.5.1 (WebJars)
-- **MySQL** (connecteur 8.0.30, Hibernate en dialecte MySQL 5)
-- **JWT** avec `jjwt` 0.11.2
-- **Apache POI** 5.2.2 pour l'import et l'export Excel
+- **Spring Boot** 2.7.3: Web, Web Services, Data JPA, Data REST, Validation, Security, Mail, DevTools
+- **Thymeleaf** with the Layout Dialect and `thymeleaf-extras-springsecurity5`
+- **Bootstrap** 5.1.3 and **jQuery** 3.5.1 (WebJars)
+- **MySQL** (connector 8.0.30, Hibernate with the MySQL 5 dialect)
+- **JWT** with `jjwt` 0.11.2
+- **Apache POI** 5.2.2 for Excel import and export
 - **Lombok**
-- **Gradle** pour le build. Les tests utilisent JUnit 5 via `spring-boot-starter-test`.
+- **Gradle** for the build. Tests use JUnit 5 through `spring-boot-starter-test`.
 
-## Structure du projet
+## Project structure
 
 ```
 src/main/java/tv/wouri/dauphine/
-  DauphineApplication.java   Point d'entrée Spring Boot
-  controllers/               Contrôleurs MVC du back-office (élèves, salles, exercices, frais, tranches, affectations, utilisateurs)
-  models/                    Entités JPA (Eleve, Salle, Excercise, Frais, Tranche, Paiement, Affectation, User, Role…)
-  repositories/              Repositories Spring Data JPA
-  service/                   Services métier
-  security/                  Configuration Spring Security et connexion du back-office
-  config/                    Utilitaires (import/export Excel, gestion des erreurs d'upload)
+  DauphineApplication.java   Spring Boot entry point
+  controllers/               Back-office MVC controllers (students, rooms, school years, fees, installments, assignments, users)
+  models/                    JPA entities (Eleve, Salle, Excercise, Frais, Tranche, Paiement, Affectation, User, Role…)
+  repositories/              Spring Data JPA repositories
+  service/                   Business services
+  security/                  Spring Security configuration and back-office login
+  config/                    Utilities (Excel import/export, upload error handling)
   apiV1/
-    controller/              Contrôleurs REST (auth, élèves, paiements)
-    config/                  JWT (utilitaires, filtre, constantes)
-    model/                   Objets de requête et de réponse de l'API
+    controller/              REST controllers (auth, students, payments)
+    config/                  JWT (utilities, filter, constants)
+    model/                   API request and response objects
 src/main/resources/
-  application.properties     Configuration de l'application
-  templates/                 Vues Thymeleaf
-  static/                    Ressources statiques
+  application.properties     Application configuration
+  templates/                 Thymeleaf views
+  static/                    Static resources
 src/test/                    Tests
 ```
 
-## Installation et lancement
+## Installation and running
 
-Prérequis : un JDK 8 ou plus récent et une base de données MySQL.
+Prerequisites: JDK 8 or later and a MySQL database.
 
-1. Créer une base MySQL et renseigner la connexion dans `src/main/resources/application.properties`. Le schéma est créé ou mis à jour automatiquement grâce à `spring.jpa.hibernate.ddl-auto=update`.
-2. Lancer l'application :
+1. Create a MySQL database and set the connection in `src/main/resources/application.properties`. The schema is created or updated automatically thanks to `spring.jpa.hibernate.ddl-auto=update`.
+2. Start the application:
    ```bash
    ./gradlew bootRun
    ```
-   L'application est servie sous le contexte `/dauphine`, par exemple `http://localhost:8080/dauphine/`.
-3. Construire le JAR exécutable :
+   The application is served under the `/dauphine` context, for example `http://localhost:8080/dauphine/`.
+3. Build the executable JAR:
    ```bash
    ./gradlew build
    java -jar build/libs/dauphine-0.0.1-SNAPSHOT.jar
    ```
-4. Lancer les tests :
+4. Run the tests:
    ```bash
    ./gradlew test
    ```
 
 ## Configuration
 
-Le dépôt ne contient pas de fichier `.env.example`. Les réglages se trouvent dans `src/main/resources/application.properties`. Les principales clés sont :
+The repository does not include a `.env.example` file. Settings are in `src/main/resources/application.properties`. The main keys are:
 
-- source de données : `spring.datasource.url`, `spring.datasource.username`, `spring.datasource.driver-class-name` ;
-- JPA et Hibernate : `spring.jpa.hibernate.dialect`, `spring.jpa.hibernate.ddl-auto`, `spring.jpa.show-sql` ;
-- serveur : `server.servlet.context-path` ;
-- téléversement de fichiers : `spring.servlet.multipart.max-file-size`, `spring.servlet.multipart.max-request-size`, `spring.servlet.multipart.location` ;
-- Thymeleaf et ressources statiques : `spring.thymeleaf.*`, `spring.web.resources.*`.
+- data source: `spring.datasource.url`, `spring.datasource.username`, `spring.datasource.driver-class-name`;
+- JPA and Hibernate: `spring.jpa.hibernate.dialect`, `spring.jpa.hibernate.ddl-auto`, `spring.jpa.show-sql`;
+- server: `server.servlet.context-path`;
+- file uploads: `spring.servlet.multipart.max-file-size`, `spring.servlet.multipart.max-request-size`, `spring.servlet.multipart.location`;
+- Thymeleaf and static resources: `spring.thymeleaf.*`, `spring.web.resources.*`.
 
-Ne versionnez pas de mots de passe ni de secrets JWT ou SMTP. Préférez des variables d'environnement, par exemple `SPRING_DATASOURCE_PASSWORD`.
+Do not commit passwords or JWT or SMTP secrets. Prefer environment variables, for example `SPRING_DATASOURCE_PASSWORD`.

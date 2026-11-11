@@ -1,60 +1,60 @@
-# SYGEM – Système de gestion de la mutuelle
+# SYGEM – Mutual insurance management system
 
-Application web (portail des mutualistes) d'une mutuelle d'entreprise. Elle permet aux adhérents de consulter leur situation financière et leur historique auprès de la mutuelle, et de soumettre en ligne leurs demandes de prêt et d'aide financière.
+Web application (members' portal) for a company mutual insurance fund. It lets members view their financial standing and history with the fund, and submit loan and financial aid requests online.
 
-## Fonctionnalités principales
+## Main features
 
-- **Compte utilisateur** : inscription d'un mutualiste (à partir de son matricule) avec activation par e-mail, connexion, déconnexion, réinitialisation et changement du mot de passe
-- **Tableau de bord** de l'adhérent
-- **Situation financière** et **profil** du mutualiste
-- **Historique** des opérations, avec filtrage par période et export PDF
-- **Prêts** : liste paginée, recherche, détail, nouvelle demande, annulation ; simulation du montant net (frais de gestion et intérêts selon le type de prêt) et calcul de rachat via une petite API JSON (`/api/typepret`, `/api/calcul`, `/api/rachat`)
-- **Aides financières** : liste, recherche, détail, nouvelle demande, annulation
-- Sécurité par Spring Security (pages d'accès refusé, erreurs 404 / 500)
-- Envoi d'e-mails (activation, réinitialisation du mot de passe)
+- **User account**: member sign-up (using their employee ID number) with e-mail activation, login, logout, password reset and change
+- Member **dashboard**
+- Member's **financial standing** and **profile**
+- Transaction **history**, with filtering by period and PDF export
+- **Loans**: paginated list, search, details, new request, cancellation; simulation of the net amount (management fees and interest depending on the loan type) and buyback calculation through a small JSON API (`/api/typepret`, `/api/calcul`, `/api/rachat`)
+- **Financial aid**: list, search, details, new request, cancellation
+- Security with Spring Security (access-denied pages, 404 / 500 errors)
+- E-mail sending (activation, password reset)
 
-## Stack technique
+## Tech stack
 
 - **Java 11**
-- **Spring Boot 2.7.6** : Web, Data JPA, Data REST, Security, Validation, Mail, Web Services
-- **Thymeleaf** (+ Layout Dialect, extras Spring Security 5), thème AdminLTE, Bootstrap 5, jQuery (WebJars)
+- **Spring Boot 2.7.6**: Web, Data JPA, Data REST, Security, Validation, Mail, Web Services
+- **Thymeleaf** (+ Layout Dialect, Spring Security 5 extras), AdminLTE theme, Bootstrap 5, jQuery (WebJars)
 - **MySQL** (`mysql-connector-j`), Hibernate
-- Lombok, OpenPDF (export PDF), Apache POI, JJWT
-- Build : **Maven** (wrapper `mvnw` fourni)
+- Lombok, OpenPDF (PDF export), Apache POI, JJWT
+- Build: **Maven** (`mvnw` wrapper included)
 
-## Structure du projet
+## Project structure
 
 ```
 src/main/java/com/adc/sygem/
-├── config/         # Constantes et paramètres (sécurité, e-mail)
-├── controllers/    # Contrôleurs MVC : prêts, aides, comptes, paramètres, API JSON
-├── forms/          # Objets de formulaire
-├── models/         # Entités JPA (mutualiste, ayant droit, prêt, échéance, cotisation, aide, transaction, rôle…)
-├── repositories/   # Dépôts Spring Data JPA
-├── security/       # Configuration Spring Security, connexion
-├── services/       # Services métier, envoi d'e-mails, export PDF de l'historique
+├── config/         # Constants and settings (security, e-mail)
+├── controllers/    # MVC controllers: loans, aid, accounts, settings, JSON API
+├── forms/          # Form objects
+├── models/         # JPA entities (member, beneficiary, loan, installment, contribution, aid, transaction, role…)
+├── repositories/   # Spring Data JPA repositories
+├── security/       # Spring Security configuration, login
+├── services/       # Business services, e-mail sending, PDF export of the history
 └── SygemApplication.java
 src/main/resources/
 ├── application.properties
-├── static/         # Ressources AdminLTE (CSS, JS, images)
-└── templates/      # Vues Thymeleaf (dashboard, pret, aide, user, setting, login, erreurs)
-src/test/           # Test de démarrage Spring Boot
+├── static/         # AdminLTE resources (CSS, JS, images)
+└── templates/      # Thymeleaf views (dashboard, pret, aide, user, setting, login, errors)
+src/test/           # Spring Boot startup test
 ```
 
-## Installation et lancement
+## Installation and running
 
-Prérequis : JDK 11, une base MySQL accessible.
+Prerequisites: JDK 11, an accessible MySQL database.
 
 ```bash
 ./mvnw clean package
 ./mvnw spring-boot:run
-# ou
+# or
 java -jar target/sygem-0.0.1-SNAPSHOT.jar
 ```
 
-Par défaut, l'application écoute sur le port `8083` avec le chemin de contexte `/sygem` (`http://localhost:8083/sygem`). Le schéma est mis à jour automatiquement par Hibernate (`ddl-auto=update`).
+By default, the application listens on port `8083` with the `/sygem` context path (`http://localhost:8083/sygem`). The schema is updated automatically by Hibernate (`ddl-auto=update`).
 
-Tests :
+Tests:
 
 ```bash
 ./mvnw test
@@ -62,9 +62,9 @@ Tests :
 
 ## Configuration
 
-Il n'y a pas de fichier `.env.example` ; la configuration se fait dans `src/main/resources/application.properties` (ou via les variables d'environnement / arguments Spring Boot équivalents). Renseignez vos propres valeurs pour :
+There is no `.env.example` file; configuration is done in `src/main/resources/application.properties` (or through the equivalent Spring Boot environment variables / arguments). Fill in your own values for:
 
-- `spring.datasource.url`, `spring.datasource.username`, `spring.datasource.password` : connexion MySQL
-- `spring.mail.host`, `spring.mail.port`, `spring.mail.username`, `spring.mail.password` : serveur SMTP
-- `server.port`, `server.servlet.context-path` : port et chemin de l'application
-- `spring.servlet.multipart.*` : taille et dossier des fichiers téléversés
+- `spring.datasource.url`, `spring.datasource.username`, `spring.datasource.password`: MySQL connection
+- `spring.mail.host`, `spring.mail.port`, `spring.mail.username`, `spring.mail.password`: SMTP server
+- `server.port`, `server.servlet.context-path`: application port and path
+- `spring.servlet.multipart.*`: size and folder for uploaded files

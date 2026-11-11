@@ -1,76 +1,76 @@
 # Healthys Patients
 
-Application mobile Flutter de la famille **Healthys**, destinée aux **patients**. Elle leur permet de
-conserver leurs informations de santé en ligne (carte digitale santé, carnet de santé, historique médical,
-carnet de vaccination), de trouver des professionnels et structures de santé et de prendre rendez-vous,
-en s'appuyant sur l'API back-end Healthys.
+Flutter mobile app of the **Healthys** family, intended for **patients**. It lets them keep their
+health information online (digital health card, health booklet, medical history,
+vaccination record), find healthcare professionals and facilities, and book appointments,
+using the Healthys back-end API.
 
-Il s'agit de la version la plus récente de l'application patient (voir aussi `healthys_patient` et
-`healyhys2`, versions antérieures). Les applications sœurs `helthysfront` (structures et médecins) et
-`healthysvendeur` (revendeurs) complètent l'écosystème.
+This is the most recent version of the patient app (see also `healthys_patient` and
+`healyhys2`, earlier versions). The sister apps `helthysfront` (facilities and doctors) and
+`healthysvendeur` (resellers) complete the ecosystem.
 
-## Fonctionnalités principales
+## Main features
 
-- **Compte** : inscription, connexion, réinitialisation et changement du mot de passe, gestion de
-  plusieurs profils rattachés au compte (changement de profil), informations personnelles.
-- **Verrouillage de l'application** (`flutter_app_lock`) après une période d'inactivité.
-- **Tableau de bord patient** :
-  - ma carte digitale santé (avec QR code) et activation de carte ;
-  - historique médical, consultations, antécédents médicaux, dossier médical ;
-  - paramètres médicaux et mode de vie ;
-  - carnet de vaccination (ajout de vaccins) ;
-  - informations de première urgence ;
-  - mon carnet de santé ;
-  - mes rendez-vous (prise, consultation, modification) ;
-  - Health News (actualités santé).
-- **Espace professionnel** (selon le profil) : carte digitale pro, consultations, dossiers médicaux,
-  rendez-vous, identification d'un patient et activation de carte.
-- **Annuaires** : personnels de santé (médecins), structures de santé (hôpitaux, centres, pharmacies,
-  laboratoires), assurances, courtiers en assurance, banques, partenaires.
-- **Abonnements** : souscription à un abonnement (avec ou sans matricule santé) et paiement via une
-  page web intégrée.
-- Auto-dépistage, conditions d'utilisation et politique de confidentialité.
-- Visualisation de PDF, prise de photo / galerie, compression d'images, signature électronique.
-- **Multilingue** : français, anglais et espagnol (`locale/i18n_*.json`), avec écran de choix de la langue.
+- **Account**: sign-up, login, password reset and password change, management of
+  multiple profiles linked to the account (profile switching), personal information.
+- **App lock** (`flutter_app_lock`) after a period of inactivity.
+- **Patient dashboard**:
+  - my digital health card (with QR code) and card activation;
+  - medical history, consultations, past medical history, medical record;
+  - medical parameters and lifestyle;
+  - vaccination record (adding vaccines);
+  - emergency information;
+  - my health booklet;
+  - my appointments (booking, viewing, editing);
+  - Health News (health news).
+- **Professional area** (depending on the profile): digital professional card, consultations, medical records,
+  appointments, patient identification and card activation.
+- **Directories**: healthcare staff (doctors), healthcare facilities (hospitals, centers, pharmacies,
+  laboratories), insurers, insurance brokers, banks, partners.
+- **Subscriptions**: subscription sign-up (with or without a health ID number) and payment via an
+  embedded web page.
+- Self-screening, terms of use and privacy policy.
+- PDF viewing, photo capture / gallery, image compression, electronic signature.
+- **Multilingual**: French, English and Spanish (`locale/i18n_*.json`), with a language selection screen.
 
-## Stack technique
+## Tech stack
 
-- **Langage** : Dart (SDK `>=2.18.4 <3.0.0`)
-- **Framework** : Flutter (Android, iOS, web, Linux, macOS, Windows)
-- **Principales dépendances** : `http`, `shared_preferences`, `flutter_app_lock`, `qr_flutter`,
+- **Language**: Dart (SDK `>=2.18.4 <3.0.0`)
+- **Framework**: Flutter (Android, iOS, web, Linux, macOS, Windows)
+- **Main dependencies**: `http`, `shared_preferences`, `flutter_app_lock`, `qr_flutter`,
   `image_picker`, `camera`, `flutter_image_compress`, `flutter_pdfview`, `flutter_webview_plugin`,
   `webview_flutter_plus`, `syncfusion_flutter_signaturepad`, `cached_network_image`, `url_launcher`,
   `permission_handler`, `intl_phone_field`
-- **Version de l'application** : 1.0.1+23 — identifiant Android `cm.heatly`
+- **App version**: 1.0.1+23 — Android application ID `cm.heatly`
 
-## Structure du projet
+## Project structure
 
 ```
 lib/
-├── main.dart        # Point d'entrée : verrouillage, langue, page de démarrage
-├── config/          # Configuration (URL de l'API), traductions, singleton, compression d'images
-├── pages/           # Écrans (connexion, inscription, accueil, carte digitale, rendez-vous, vaccins…)
-├── fragments/       # Sections du tableau de bord (dossier médical, annuaires, assurances, urgence…)
-├── forms/           # Formulaires (connexion, inscription, rendez-vous, vaccin, souscription…)
-├── models/          # Modèles de données (Compte, Profil, Medecin, Consultation, Vaccin, Abonnement…)
-└── lock/            # Écran de verrouillage de l'application
-locale/              # Fichiers de traduction (fr, en, es)
-img/                 # Images et icônes
-android/, ios/, web/, linux/, macos/, windows/   # Projets des différentes plateformes
+├── main.dart        # Entry point: lock, language, splash page
+├── config/          # Configuration (API URL), translations, singleton, image compression
+├── pages/           # Screens (login, sign-up, home, digital card, appointments, vaccines…)
+├── fragments/       # Dashboard sections (medical record, directories, insurance, emergency…)
+├── forms/           # Forms (login, sign-up, appointment, vaccine, subscription sign-up…)
+├── models/          # Data models (Compte, Profil, Medecin, Consultation, Vaccin, Abonnement…)
+└── lock/            # App lock screen
+locale/              # Translation files (fr, en, es)
+img/                 # Images and icons
+android/, ios/, web/, linux/, macos/, windows/   # Platform projects
 ```
 
-## Installation et lancement
+## Installation and running
 
-Prérequis : Flutter 3.x avec Dart `>=2.18.4 <3.0.0`, Android Studio / Xcode.
+Prerequisites: Flutter 3.x with Dart `>=2.18.4 <3.0.0`, Android Studio / Xcode.
 
 ```bash
 flutter pub get
-flutter run                 # lancer sur un appareil ou un émulateur
-flutter build apk           # générer l'APK Android
-flutter build ios           # générer l'application iOS (sur macOS)
+flutter run                 # run on a device or an emulator
+flutter build apk           # build the Android APK
+flutter build ios           # build the iOS app (on macOS)
 ```
 
-Pour régénérer les icônes de l'application :
+To regenerate the app icons:
 
 ```bash
 flutter pub run flutter_launcher_icons:main
@@ -78,6 +78,6 @@ flutter pub run flutter_launcher_icons:main
 
 ## Configuration
 
-Le projet ne contient pas de fichier `.env.example`. Les adresses du serveur back-end (API, images, PDF)
-sont définies dans `lib/config/Setting.dart` (`apiracine`, `serveurracine`, `serveurimage`,
-`serveurimage1`, `serveurpdf`) et doivent être adaptées à votre environnement avant la compilation.
+The project does not include a `.env.example` file. The back-end server addresses (API, images, PDF)
+are defined in `lib/config/Setting.dart` (`apiracine`, `serveurracine`, `serveurimage`,
+`serveurimage1`, `serveurpdf`) and must be adapted to your environment before building.

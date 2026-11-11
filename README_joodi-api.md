@@ -1,78 +1,78 @@
 # Joodi API
 
-API REST de la plateforme **Joodi** (podcasts africains). Elle sert les applications mobiles
-Joodi (catalogue audio, lecture, comptes, abonnements, achats) et la passerelle de paiement
-web, qui l'interroge pour récupérer et clôturer les paiements.
+REST API for the **Joodi** platform (African podcasts). It serves the Joodi mobile
+apps (audio catalog, playback, accounts, subscriptions, purchases) and the web payment
+gateway, which calls it to retrieve and close payments.
 
-Public visé : les développeurs des applications clientes Joodi et l'équipe d'exploitation.
+Intended audience: developers of the Joodi client apps and the operations team.
 
-## Fonctionnalités principales
+## Main features
 
-API **v1** (`/api/v1/...`, consommée par les applications) :
+**v1** API (`/api/v1/...`, used by the apps):
 
-- **Authentification** (`/auth`) : inscription, connexion (jeton JWT), réinitialisation et
-  changement de mot de passe, référentiels publics (langues, pays, domaines).
-- **Compte** (`/account`) : activation par code, vérification de jeton, profil, mise à jour,
-  suppression du compte, déconnexion, notifications.
-- **Audio** (`/audio`) : contenus de l'accueil par rubrique, slider, catégories, recherche,
-  détail d'un podcast et de ses épisodes, enregistrement des lectures et téléchargements,
-  notation et « j'aime ».
-- **Paiement** (`/paiement`) : formules d'abonnement, initialisation d'un abonnement ou d'une
-  commande, validation de codes promo, historique des achats, abonnements et paiements.
+- **Authentication** (`/auth`): sign-up, sign-in (JWT token), password reset and
+  change, public reference data (languages, countries, domains).
+- **Account** (`/account`): activation by code, token verification, profile, update,
+  account deletion, sign-out, notifications.
+- **Audio** (`/audio`): home page content by section, slider, categories, search,
+  podcast and episode details, recording of plays and downloads,
+  ratings and "likes".
+- **Payment** (`/paiement`): subscription plans, initialization of a subscription or an
+  order, promo code validation, history of purchases, subscriptions and payments.
 
-API **v0** (`/api/v0/...`) :
+**v0** API (`/api/v0/...`):
 
-- **Audio** : tendances, boutique, détail d'un contenu, lectures.
-- **Payment** : consultation d'un paiement, mise à jour de sa référence et clôture
-  (utilisé par la passerelle `joodi_paiement`).
+- **Audio**: trends, store, content details, plays.
+- **Payment**: payment lookup, update of its reference, and closing
+  (used by the `joodi_paiement` gateway).
 
-Les routes non publiques sont protégées par JWT (Spring Security).
+Non-public routes are protected by JWT (Spring Security).
 
-## Stack technique
+## Tech stack
 
 - Java 17, Spring Boot 3.5 (Web/Data REST, Security)
-- Bibliothèque partagée `africa.joodi:joodi-common` 2.0.1 (entités JPA, sécurité, S3, e-mail)
+- Shared library `africa.joodi:joodi-common` 2.0.1 (JPA entities, security, S3, email)
 - PostgreSQL (via joodi-common), OkHttp, org.json, Lombok
-- Tests : Spring Boot Test / JUnit 5 ; couverture JaCoCo
-- Build : Maven (wrapper fourni) ; image Docker basée sur OpenJDK 17
-- CI/CD : GitHub Actions (build, tests, image Docker, publication sur un dépôt d'artefacts)
+- Tests: Spring Boot Test / JUnit 5; JaCoCo coverage
+- Build: Maven (wrapper included); Docker image based on OpenJDK 17
+- CI/CD: GitHub Actions (build, tests, Docker image, publishing to an artifact repository)
 
-## Structure du projet
+## Project structure
 
 ```
 src/main/java/africa/joodi/api/
 ├── JoodiApiApplication.java
-├── config/            # sécurité, jeton d'accès PayPal
-├── v0/controllers/    # API v0 (audio, paiement pour la passerelle)
-└── v1/controllers/    # API v1 (auth, compte, audio, paiement)
-    v1/models/         # requêtes et réponses JSON
+├── config/            # security, PayPal access token
+├── v0/controllers/    # v0 API (audio, payment for the gateway)
+└── v1/controllers/    # v1 API (auth, account, audio, payment)
+    v1/models/         # JSON requests and responses
 src/main/resources/
-├── application.properties          # configuration principale
-└── application-common.properties   # propriétés transmises à joodi-common
-src/test/                           # tests des contrôleurs
-Dockerfile, settings.xml            # image d'exécution, configuration Maven du dépôt d'artefacts
+├── application.properties          # main configuration
+└── application-common.properties   # properties passed to joodi-common
+src/test/                           # controller tests
+Dockerfile, settings.xml            # runtime image, Maven configuration for the artifact repository
 ```
 
-## Installation et lancement
+## Installation and running
 
-Prérequis : JDK 17, accès à la dépendance `joodi-common` (installée localement via
-`./mvnw install` dans le dépôt `joodi-common`, ou depuis le dépôt d'artefacts), une base
-PostgreSQL.
+Prerequisites: JDK 17, access to the `joodi-common` dependency (installed locally with
+`./mvnw install` in the `joodi-common` repository, or from the artifact repository), a
+PostgreSQL database.
 
 ```bash
 ./mvnw clean package
 java -jar target/joodi-api-*.jar
 ```
 
-ou en développement :
+or, for development:
 
 ```bash
 ./mvnw spring-boot:run
 ```
 
-Le service écoute sur le port `8080`.
+The service listens on port `8080`.
 
-Avec Docker (après avoir copié le JAR sous le nom `joodi-api.jar` à la racine) :
+With Docker (after copying the JAR as `joodi-api.jar` to the project root):
 
 ```bash
 docker build -t joodi-api .
@@ -81,12 +81,12 @@ docker run -p 8080:8080 --env-file .env joodi-api
 
 ## Configuration
 
-Aucun fichier `.env.example` n'est fourni. Les variables d'environnement lues sont :
+No `.env.example` file is provided. The environment variables read are:
 
-- Base de données : `DATABASE_URL`, `DATABASE_USER`, `DATABASE_PASSWORD`, `DATABASE_SCHEMA`
-- SMTP : `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`
-- Sécurité : `JWT_SECRET`
-- AWS : `S3_BUCKET`, `S3_REGION`, `S3_ACCESS_KEY`, `S3_SECRET_KEY`,
+- Database: `DATABASE_URL`, `DATABASE_USER`, `DATABASE_PASSWORD`, `DATABASE_SCHEMA`
+- SMTP: `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`
+- Security: `JWT_SECRET`
+- AWS: `S3_BUCKET`, `S3_REGION`, `S3_ACCESS_KEY`, `S3_SECRET_KEY`,
   `CLOUDFRONT_DISTRIBUTION_ID`, `CLOUDFRONT_KEY_PAIR`, `CLOUDFRONT_PRIVATE_KEY`
-- Paiement : `PAYPAL_TOKEN`, `LYGOS_TOKEN`
-- Divers : `APPS_URL`, `BILL_URL`, `SERVEUR` (environnement cible)
+- Payment: `PAYPAL_TOKEN`, `LYGOS_TOKEN`
+- Miscellaneous: `APPS_URL`, `BILL_URL`, `SERVEUR` (target environment)

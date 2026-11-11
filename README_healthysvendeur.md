@@ -1,59 +1,58 @@
 # Healthys Vendeur
 
-Application mobile Flutter de la famille **Healthys**, destinée aux **revendeurs / agents commerciaux**
-du réseau Healthys. Elle leur permet d'enregistrer de nouveaux patients, d'activer leurs comptes
-(abonnements) et d'enregistrer des entreprises partenaires, en s'appuyant sur l'API back-end Healthys.
+Flutter mobile app of the **Healthys** family, intended for **resellers / sales agents**
+of the Healthys network. It lets them register new patients, activate their accounts
+(subscriptions) and register partner companies, using the Healthys back-end API.
 
-Elle complète les autres applications de l'écosystème : `healthys_patients` / `healthys_patient`
-(patients) et `helthysfront` (structures et médecins).
+It complements the other apps of the ecosystem: `healthys_patients` / `healthys_patient`
+(patients) and `helthysfront` (facilities and doctors).
 
-## Fonctionnalités principales
+## Main features
 
-- **Connexion** du revendeur, réinitialisation et changement du mot de passe, page « Mon compte ».
-- **Enregistrer un patient** : saisie de l'identité, des coordonnées (téléphone, e-mail, adresse, ville),
-  de la profession, de la pièce d'identité, etc., avec prise de photo ; écran de confirmation
-  « Nouveau patient ».
-- **Activer un compte** : saisie ou **scan du QR code** du matricule patient, choix de l'abonnement et
-  du mode de paiement, code revendeur et référence de paiement.
-- **Enregistrer une entreprise** : raison sociale, activité, responsable, coordonnées, ville et district.
-- **Multilingue** : fichiers de traduction français, anglais et espagnol (`locale/i18n_*.json`).
+- Reseller **login**, password reset and password change, "My account" page.
+- **Register a patient**: entry of identity, contact details (phone, email, address, city),
+  occupation, ID document, etc., with photo capture; "New patient" confirmation screen.
+- **Activate an account**: entry or **QR code scan** of the patient ID number, choice of subscription and
+  payment method, reseller code and payment reference.
+- **Register a company**: company name, business activity, manager, contact details, city and district.
+- **Multilingual**: French, English and Spanish translation files (`locale/i18n_*.json`).
 
-## Stack technique
+## Tech stack
 
-- **Langage** : Dart (SDK `>=2.7.0 <3.0.0`)
-- **Framework** : Flutter (Android, iOS, web)
-- **Principales dépendances** : `http`, `shared_preferences`, `qrscan`, `qr_flutter`, `image_picker`,
+- **Language**: Dart (SDK `>=2.7.0 <3.0.0`)
+- **Framework**: Flutter (Android, iOS, web)
+- **Main dependencies**: `http`, `shared_preferences`, `qrscan`, `qr_flutter`, `image_picker`,
   `camera`, `webview_flutter`, `flutter_webview_plugin`, `cached_network_image`, `fluttertoast`,
   `flutter_datetime_picker`, `intl_phone_field`, `flutter_pdfview`
-- **Identifiant Android** : `cm.healthys_vendeur`
+- **Android application ID**: `cm.healthys_vendeur`
 
-## Structure du projet
+## Project structure
 
 ```
 lib/
-├── main.dart        # Point d'entrée de l'application
-├── config/          # Configuration (URL de l'API), traductions, compression d'images
-├── page/            # Écrans (connexion, accueil, nouveau patient, activation, entreprise, compte…)
-├── form/            # Formulaires (connexion, patient, activation, entreprise, mot de passe)
-├── fragment/        # Fragment d'accueil
-└── model/           # Modèles de données (Compte, Profil, Menu…)
-locale/              # Fichiers de traduction (fr, en, es)
-img/                 # Images et icônes
-android/, ios/, web/ # Projets natifs et cible web
+├── main.dart        # App entry point
+├── config/          # Configuration (API URL), translations, image compression
+├── page/            # Screens (login, home, new patient, activation, company, account…)
+├── form/            # Forms (login, patient, activation, company, password)
+├── fragment/        # Home fragment
+└── model/           # Data models (Compte, Profil, Menu…)
+locale/              # Translation files (fr, en, es)
+img/                 # Images and icons
+android/, ios/, web/ # Native projects and web target
 ```
 
-## Installation et lancement
+## Installation and running
 
-Prérequis : un SDK Flutter compatible avec Dart 2 (contrainte `>=2.7.0 <3.0.0`), Android Studio / Xcode.
+Prerequisites: a Flutter SDK compatible with Dart 2 (constraint `>=2.7.0 <3.0.0`), Android Studio / Xcode.
 
 ```bash
 flutter pub get
-flutter run                 # lancer sur un appareil ou un émulateur
-flutter build apk           # générer l'APK Android
-flutter build ios           # générer l'application iOS (sur macOS)
+flutter run                 # run on a device or an emulator
+flutter build apk           # build the Android APK
+flutter build ios           # build the iOS app (on macOS)
 ```
 
 ## Configuration
 
-Le projet ne contient pas de fichier `.env.example`. Les adresses du serveur back-end sont définies dans
-`lib/config/Setting.dart` et doivent être adaptées à votre environnement avant la compilation.
+The project does not include a `.env.example` file. The back-end server addresses are defined in
+`lib/config/Setting.dart` and must be adapted to your environment before building.

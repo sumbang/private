@@ -1,82 +1,82 @@
-# eneo-web : back-office et API des relevés de compteurs terrain
+# eneo-web: back office and API for field meter readings
 
-Application web de gestion des **rapports de terrain** produits par les agents chargés du relevé et du contrôle des compteurs électriques. Elle sert à la fois :
+Web application for managing the **field reports** produced by agents in charge of reading and inspecting electricity meters. It serves as both:
 
-- de **back-office** (interface d'administration) pour les superviseurs : consultation des rapports, gestion des utilisateurs, des régions, des agences et des fichiers de données ;
-- de **webservice** pour l'application mobile des agents : authentification, téléchargement des données de référence, envoi des rapports de terrain.
+- a **back office** (admin interface) for supervisors: viewing reports, managing users, regions, branches and data files;
+- a **web service** for the agents' mobile app: authentication, downloading reference data, submitting field reports.
 
-Public visé : équipes de supervision (back-office) et agents de terrain (via l'application mobile qui consomme le webservice).
+Intended audience: supervision teams (back office) and field agents (through the mobile app that consumes the web service).
 
-## Fonctionnalités principales
+## Main features
 
-### Back-office (Yii 2)
-- Connexion / déconnexion des utilisateurs, avec menus différents selon le rôle.
-- **Tableau de bord** avec graphiques « Performances de terrain » et « Volumes d'anomalies ».
-- **Rapports de terrain** : liste, recherche, consultation, modification, suppression et **export CSV** (anomalie, usage, index lu, ampérage, latitude/longitude, localisation, compteur, observations, matricule, date d'opération, distance de saisie).
-- **Utilisateurs** : gestion des agents (matricule, nom, téléphone, région, agence, statut, rôle).
-- **Régions** et **Agences** : gestion des référentiels géographiques.
-- **Mise à jour des données** : téléversement de fichiers de données par région (stockés dans `web/uploads/`), mis à disposition de l'application mobile.
+### Back office (Yii 2)
+- User sign-in / sign-out, with different menus depending on the role.
+- **Dashboard** with "Field performance" and "Anomaly volumes" charts.
+- **Field reports**: list, search, view, edit, delete and **CSV export** (anomaly, usage, meter reading, amperage, latitude/longitude, location, meter, remarks, employee ID, operation date, entry distance).
+- **Users**: agent management (employee ID, name, phone, region, branch, status, role).
+- **Regions** and **Branches**: management of geographic reference data.
+- **Data update**: upload of data files per region (stored in `web/uploads/`), made available to the mobile app.
 
-### Webservice (`webservice/controller.php`)
-Point d'entrée unique piloté par le paramètre `action` :
-- `login` : authentification d'un agent par matricule ;
-- `getdata` : récupération du fichier de données de la région de l'agent ;
-- `setdata` : enregistrement d'un rapport de terrain (anomalie, usage, index, ampérage, position GPS, compteur, observations), avec vérification de la correspondance compteur / contrat ;
-- `amperage`, `anomalies` : listes de référence ;
-- `compteur`, `grand`, `recherche`, `recherche1` : recherche de compteurs, de contrats, de grands comptes et de points de livraison ;
-- `token` : gestion du jeton de l'appareil.
+### Web service (`webservice/controller.php`)
+Single entry point driven by the `action` parameter:
+- `login`: agent authentication by employee ID;
+- `getdata`: retrieval of the data file for the agent's region;
+- `setdata`: recording of a field report (anomaly, usage, reading, amperage, GPS position, meter, remarks), with a check that the meter matches the contract;
+- `amperage`, `anomalies`: reference lists;
+- `compteur`, `grand`, `recherche`, `recherche1`: search for meters, contracts, key accounts and delivery points;
+- `token`: device token management.
 
-### Scripts d'import
-- `compteur_to_contrat.php` : import d'un fichier CSV de correspondance compteurs / contrats.
-- `grand_compte.php` : import d'un fichier CSV du référentiel des grands comptes.
+### Import scripts
+- `compteur_to_contrat.php`: import of a CSV file mapping meters to contracts.
+- `grand_compte.php`: import of a CSV file of key account reference data.
 
-## Stack technique
+## Tech stack
 
-- **PHP** >= 5.4 (image Docker fournie : PHP 7.1 + Apache)
-- **Yii 2** (~2.0.14), gabarit « basic »
+- **PHP** >= 5.4 (Docker image provided: PHP 7.1 + Apache)
+- **Yii 2** (~2.0.14), "basic" template
 - **yii2-bootstrap**, **AdminLTE** (`dmstr/yii2-adminlte-asset`), **yii2-swiftmailer**
-- Widgets **Kartik** (date-range, datepicker)
-- Base de données **MySQL**
-- Tests : **Codeception**
+- **Kartik** widgets (date-range, datepicker)
+- **MySQL** database
+- Tests: **Codeception**
 
-## Structure du projet
+## Project structure
 
 ```
-assets/        Bundles d'assets Yii
-commands/      Commandes console
-config/        Configuration (web, console, base de données, paramètres)
-controllers/   Contrôleurs : Site, Rapport, Users, Region, Agence, Datas
-models/        Modèles ActiveRecord et modèles de recherche
-views/         Vues (layouts AdminLTE, CRUD par entité, tableau de bord)
-webservice/    API PHP consommée par l'application mobile
-web/           Racine web publique (index.php, uploads)
-widgets/       Widgets réutilisables
-tests/         Tests Codeception
-*.php (racine) Scripts d'import CSV
+assets/        Yii asset bundles
+commands/      Console commands
+config/        Configuration (web, console, database, parameters)
+controllers/   Controllers: Site, Rapport, Users, Region, Agence, Datas
+models/        ActiveRecord models and search models
+views/         Views (AdminLTE layouts, CRUD per entity, dashboard)
+webservice/    PHP API consumed by the mobile app
+web/           Public web root (index.php, uploads)
+widgets/       Reusable widgets
+tests/         Codeception tests
+*.php (root)   CSV import scripts
 ```
 
-## Installation et lancement
+## Installation and running
 
-1. Installer les dépendances :
+1. Install the dependencies:
    ```bash
    composer install
    ```
-2. Configurer la connexion à la base MySQL dans `config/db.php` (et dans `webservice/` pour l'API).
-3. Lancer l'application :
-   - avec le serveur intégré :
+2. Configure the MySQL database connection in `config/db.php` (and in `webservice/` for the API).
+3. Start the application:
+   - with the built-in server:
      ```bash
      php yii serve
      ```
-   - ou avec Docker :
+   - or with Docker:
      ```bash
      docker-compose up -d
      ```
-     L'application est alors accessible sur `http://localhost:8000`.
-4. Lancer les tests :
+     The application is then available at `http://localhost:8000`.
+4. Run the tests:
    ```bash
    vendor/bin/codecept run
    ```
 
 ## Configuration
 
-Le projet ne fournit pas de fichier `.env.example`. La configuration se fait dans les fichiers du dossier `config/` (`db.php`, `params.php`, `web.php`) et dans les fichiers de connexion du dossier `webservice/`. Ne versionnez pas de mots de passe dans ces fichiers.
+The project does not provide a `.env.example` file. Configuration is done in the files of the `config/` folder (`db.php`, `params.php`, `web.php`) and in the connection files of the `webservice/` folder. Do not commit passwords in these files.

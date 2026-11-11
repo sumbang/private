@@ -1,88 +1,88 @@
 # Wouri TV (v5)
 
-Application **Flutter** de **Wouri TV**, « le carrefour des cinémas d'Afrique » : une plateforme
-de diffusion de films, séries et contenus vidéo africains. Cette version (5.x) s'appuie sur
-**Supabase** pour l'authentification et les données, et sur une fonction serveur Supabase qui
-délivre des liens de lecture signés pour les contenus premium.
+**Flutter** app for **Wouri TV**, "the crossroads of African cinemas": a streaming platform
+for African films, series and video content. This version (5.x) relies on
+**Supabase** for authentication and data, and on a Supabase server function that
+issues signed playback URLs for premium content.
 
-Public visé : les spectateurs de Wouri TV sur mobile (Android / iOS) et web.
+Intended audience: Wouri TV viewers on mobile (Android / iOS) and web.
 
-## Fonctionnalités principales
+## Main features
 
-- **Authentification** (Supabase Auth) : inscription et connexion par e-mail / mot de passe,
-  connexion Google et Apple, réinitialisation du mot de passe, onboarding.
-- **Catalogue** : derniers films, films les plus recommandés, les plus regardés, sélection
-  aléatoire, navigation par catégorie et par chaîne, liste complète, recherche.
-- **Fiche film** : détail d'un film et de ses contenus, recommandation par l'utilisateur.
-- **Lecture vidéo** : lecteur YouTube pour les contenus gratuits ; pour les contenus premium,
-  vérification de l'achat ou de la location puis lecture via une URL signée.
-- **Ma liste** : ajout et retrait de films dans une liste personnelle.
-- **Profil** : informations du compte, changement de mot de passe, déconnexion.
-- Notifications push (Firebase Cloud Messaging), statistiques et rapports de plantage
-  (Firebase Analytics, Crashlytics, Performance), invitation aux mises à jour.
-- Interface bilingue **français / anglais** ; cache local des réponses (Hive).
+- **Authentication** (Supabase Auth): email / password sign-up and sign-in,
+  Google and Apple sign-in, password reset, onboarding.
+- **Catalog**: latest films, most recommended films, most watched films, random
+  selection, browsing by category and by channel, full list, search.
+- **Film page**: details of a film and its content, user recommendations.
+- **Video playback**: YouTube player for free content; for premium content,
+  the purchase or rental is verified, then playback uses a signed URL.
+- **My List**: adding films to and removing them from a personal list.
+- **Profile**: account information, password change, sign-out.
+- Push notifications (Firebase Cloud Messaging), analytics and crash reporting
+  (Firebase Analytics, Crashlytics, Performance), app update prompts.
+- Bilingual **French / English** interface; local cache of responses (Hive).
 
-### Fonction Supabase `generate-signed-url`
+### Supabase function `generate-signed-url`
 
-Fonction Edge (Deno / TypeScript) qui, après vérification d'un secret partagé, contrôle dans la
-base que l'utilisateur a bien acheté le film (et que la location n'a pas expiré), puis génère
-une URL CloudFront signée pour la lecture du fichier vidéo.
+Edge Function (Deno / TypeScript) that, after verifying a shared secret, checks in the
+database that the user has actually purchased the film (and that the rental has not expired), then generates
+a signed CloudFront URL for playing the video file.
 
-## Stack technique
+## Tech stack
 
 - Flutter / Dart (SDK `^3.8.1`)
-- Supabase (`supabase_flutter`) : authentification, base de données, fonctions Edge (Deno)
-- Gestion d'état : Riverpod (`hooks_riverpod`), GetX ; injection `get_it`
-- Vidéo : `youtube_player_flutter`, `video_player`, `chewie`
-- Réseau : `dio` ; stockage local : Hive, shared_preferences
-- Firebase : Core, Messaging, Analytics, Crashlytics, Performance
-- Internationalisation : génération Flutter `l10n` (fr, en)
-- CI/CD : GitHub Actions (tests, build APK/AAB et IPA, déploiement Google Play et TestFlight)
+- Supabase (`supabase_flutter`): authentication, database, Edge Functions (Deno)
+- State management: Riverpod (`hooks_riverpod`), GetX; `get_it` dependency injection
+- Video: `youtube_player_flutter`, `video_player`, `chewie`
+- Networking: `dio`; local storage: Hive, shared_preferences
+- Firebase: Core, Messaging, Analytics, Crashlytics, Performance
+- Internationalization: Flutter `l10n` code generation (fr, en)
+- CI/CD: GitHub Actions (tests, APK/AAB and IPA builds, deployment to Google Play and TestFlight)
 
-## Structure du projet
+## Project structure
 
 ```
 lib/
-├── main.dart                 # point d'entrée, initialisation Supabase et Firebase
-├── config/                   # thème, providers Riverpod, traductions, paramètres, cache Hive
+├── main.dart                 # entry point, Supabase and Firebase initialization
+├── config/                   # theme, Riverpod providers, translations, settings, Hive cache
 ├── data/
-│   ├── api/                  # services Supabase (auth, films, vidéo premium)
-│   ├── model/                # modèles de données
-│   └── repository/           # implémentations des dépôts
-├── domain/                   # entités, interfaces des dépôts, cas d'usage
+│   ├── api/                  # Supabase services (auth, films, premium video)
+│   ├── model/                # data models
+│   └── repository/           # repository implementations
+├── domain/                   # entities, repository interfaces, use cases
 ├── presentation/
-│   ├── component/            # widgets et view models réutilisables
-│   └── screen/               # écrans auth/, home/ (accueil, recherche, liste, profil), movie/
-└── l10n/                     # traductions générées
-supabase/functions/generate-signed-url/   # fonction Edge de génération d'URL signées
-distribution/whatsnew/        # notes de version pour les stores
-assets/                       # images et polices
+│   ├── component/            # reusable widgets and view models
+│   └── screen/               # auth/, home/ (home, search, list, profile), movie/ screens
+└── l10n/                     # generated translations
+supabase/functions/generate-signed-url/   # Edge Function that generates signed URLs
+distribution/whatsnew/        # release notes for the stores
+assets/                       # images and fonts
 android/, ios/, web/, macos/, linux/, windows/
 ```
 
-## Installation et lancement
+## Installation and running
 
-Prérequis : Flutter SDK compatible Dart 3.8.1+, Android Studio et/ou Xcode, un projet Supabase.
+Prerequisites: Flutter SDK compatible with Dart 3.8.1+, Android Studio and/or Xcode, a Supabase project.
 
 ```bash
 flutter pub get
 flutter run --dart-define=SUPABASE_URL=<url_du_projet> --dart-define=SUPABASE_KEY=<cle_publique>
 ```
 
-Build de production (exemples) :
+Production build (examples):
 
 ```bash
 flutter build apk --release --dart-define=SUPABASE_URL=... --dart-define=SUPABASE_KEY=...
 flutter build ios --release --dart-define=SUPABASE_URL=... --dart-define=SUPABASE_KEY=...
 ```
 
-Tests :
+Tests:
 
 ```bash
 flutter test
 ```
 
-Déploiement de la fonction Edge (avec la CLI Supabase) :
+Deploying the Edge Function (with the Supabase CLI):
 
 ```bash
 supabase functions deploy generate-signed-url
@@ -90,10 +90,10 @@ supabase functions deploy generate-signed-url
 
 ## Configuration
 
-Aucun fichier `.env.example` n'est fourni.
+No `.env.example` file is provided.
 
-- Application (passées par `--dart-define`) : `SUPABASE_URL`, `SUPABASE_KEY`.
-- Fonction Edge `generate-signed-url` (secrets Supabase) : `SUPABASE_URL`,
+- App (passed via `--dart-define`): `SUPABASE_URL`, `SUPABASE_KEY`.
+- `generate-signed-url` Edge Function (Supabase secrets): `SUPABASE_URL`,
   `SUPABASE_SERVICE_ROLE_KEY`, `FUNCTION_SECRET`, `CLOUDFRONT_DOMAIN`,
   `CLOUDFRONT_KEY_PAIR_ID`, `CLOUDFRONT_PRIVATE_KEY`.
-- Firebase : fichiers de configuration des plateformes et `lib/firebase_options.dart`.
+- Firebase: platform configuration files and `lib/firebase_options.dart`.

@@ -1,76 +1,76 @@
-# Easy Market – application mobile
+# Easy Market – mobile app
 
-Application mobile Flutter de la plateforme e-commerce **Easy Market**, destinée aux Africains de la diaspora : elle leur permet d'acheter des biens et services et de les faire livrer directement dans leur pays d'origine. L'application consomme l'API REST d'une boutique WordPress / WooCommerce.
+Flutter mobile app for the **Easy Market** e-commerce platform, aimed at Africans in the diaspora: it lets them buy goods and services and have them delivered directly in their home country. The app consumes the REST API of a WordPress / WooCommerce store.
 
-## Fonctionnalités principales
+## Main features
 
-- Écran d'accueil et onboarding, mode hors ligne (tableau de bord dédié)
-- Catalogue : catégories, produits mis en avant, nouveautés, meilleures ventes, promotions, produits groupés, recherche
-- Fiche produit détaillée
-- Panier (ajout, mise à jour, suppression, vidage) synchronisé avec le serveur
-- Codes promo (coupons) et frais de livraison
-- Passage et suivi de commandes (liste et détail des commandes)
-- Paiement par carte via Stripe, écrans de succès / échec de paiement
-- Compte client : inscription, connexion (y compris Google Sign-In et Sign in with Apple), profil, changement de mot de passe, suppression de compte
-- Choix de la devise (USD / EUR) et de la langue (français / anglais)
-- Notifications push (Firebase Cloud Messaging) et notifications locales
-- Suivi via Firebase Analytics, Crashlytics et Performance
-- Invitation à mettre à jour l'application (upgrader), partage, liens profonds
+- Splash screen and onboarding, offline mode (dedicated dashboard)
+- Catalog: categories, featured products, new arrivals, best sellers, promotions, grouped products, search
+- Detailed product page
+- Cart (add, update, remove, clear) synchronized with the server
+- Promo codes (coupons) and shipping fees
+- Placing and tracking orders (order list and details)
+- Card payment via Stripe, payment success / failure screens
+- Customer account: sign-up, login (including Google Sign-In and Sign in with Apple), profile, password change, account deletion
+- Currency (USD / EUR) and language (French / English) selection
+- Push notifications (Firebase Cloud Messaging) and local notifications
+- Monitoring with Firebase Analytics, Crashlytics and Performance
+- App update prompt (upgrader), sharing, deep links
 
-## Stack technique
+## Tech stack
 
-- **Flutter** (SDK Dart `>=3.13.0 <4.0.0`, Flutter 3.47.x en CI)
-- Gestion d'état : `hooks_riverpod` / `flutter_hooks`, `get`, injection `get_it`
-- Réseau : `dio`, `http`
-- Stockage local : `hive_ce`, `shared_preferences`
-- Paiement : `flutter_stripe`
-- Firebase : core, messaging, analytics, crashlytics, performance
-- Authentification tierce : `google_sign_in`, `sign_in_with_apple`
-- Internationalisation : `flutter_localizations`, `intl` (fichiers ARB)
-- Backend consommé : WordPress / WooCommerce (API REST)
-- Cibles : Android, iOS (dossiers web, Linux, macOS, Windows également présents)
+- **Flutter** (Dart SDK `>=3.13.0 <4.0.0`, Flutter 3.47.x in CI)
+- State management: `hooks_riverpod` / `flutter_hooks`, `get`, `get_it` dependency injection
+- Networking: `dio`, `http`
+- Local storage: `hive_ce`, `shared_preferences`
+- Payment: `flutter_stripe`
+- Firebase: core, messaging, analytics, crashlytics, performance
+- Third-party authentication: `google_sign_in`, `sign_in_with_apple`
+- Internationalization: `flutter_localizations`, `intl` (ARB files)
+- Backend consumed: WordPress / WooCommerce (REST API)
+- Targets: Android, iOS (web, Linux, macOS and Windows folders are also present)
 
-## Structure du projet
+## Project structure
 
 ```
 lib/
-├── core/            # Services transverses : notifications push, synchro du panier, langue, devise, navigation, réglages
+├── core/            # Cross-cutting services: push notifications, cart sync, language, currency, navigation, settings
 ├── data/
-│   ├── api/         # Appels à l'API REST (remote_api.dart) et authentification (auth_service.dart)
-│   ├── models/      # Modèles de requêtes et de réponses
-│   └── repositories/# Implémentation du dépôt de données
-├── domain/          # Entités, interface du dépôt, cas d'utilisation (clean architecture)
+│   ├── api/         # REST API calls (remote_api.dart) and authentication (auth_service.dart)
+│   ├── models/      # Request and response models
+│   └── repositories/# Data repository implementation
+├── domain/          # Entities, repository interface, use cases (clean architecture)
 ├── presentation/
-│   ├── components/  # View models et widgets réutilisables
-│   └── screens/     # Écrans (accueil, produits, panier, commandes, paiement, profil, connexion…)
-├── l10n/            # Traductions ARB (fr, en) et classes générées
+│   ├── components/  # View models and reusable widgets
+│   └── screens/     # Screens (home, products, cart, orders, payment, profile, login…)
+├── l10n/            # ARB translations (fr, en) and generated classes
 └── main.dart
-assets/, img/        # Polices et images
-locale/              # Fichiers de traduction JSON
-test/                # Tests unitaires / d'intégration (synchronisation du panier, widget)
-.github/workflows/   # Pipeline de build et de déploiement vers les stores
-.ai/                 # Notes de contexte, architecture et règles de code
+assets/, img/        # Fonts and images
+locale/              # JSON translation files
+test/                # Unit / integration tests (cart synchronization, widget)
+.github/workflows/   # Build and store deployment pipeline
+.ai/                 # Context, architecture and coding-rule notes
 ```
 
-## Installation et lancement
+## Installation and running
 
-Prérequis : Flutter installé, ainsi qu'un projet Firebase configuré pour les plateformes ciblées.
+Prerequisites: Flutter installed, and a Firebase project configured for the target platforms.
 
 ```bash
 flutter pub get
-# Génération éventuelle des adaptateurs Hive
+# Generate Hive adapters if needed
 dart run build_runner build --delete-conflicting-outputs
-# Lancement (les valeurs de configuration sont passées à la compilation)
+# Run (configuration values are passed at build time)
 flutter run --dart-define-from-file=dart-defines.json
 ```
 
-Tests :
+Tests:
 
 ```bash
 flutter test
 ```
 
-Builds de release :
+Release builds:
 
 ```bash
 flutter build apk --release --dart-define-from-file=dart-defines.json
@@ -78,17 +78,17 @@ flutter build appbundle --release --dart-define-from-file=dart-defines.json
 flutter build ios --release --dart-define-from-file=dart-defines.json
 ```
 
-Le déploiement automatisé vers Google Play (piste interne) et TestFlight est décrit dans [DEPLOYMENT.md](./DEPLOYMENT.md).
+Automated deployment to Google Play (internal track) and TestFlight is described in [DEPLOYMENT.md](./DEPLOYMENT.md).
 
 ## Configuration
 
-Les valeurs suivantes sont lues à la compilation via `String.fromEnvironment` (à fournir dans un fichier passé avec `--dart-define-from-file`, à ne pas versionner) :
+The following values are read at build time via `String.fromEnvironment` (provide them in a file passed with `--dart-define-from-file`, and do not commit it):
 
-| Nom | Rôle |
+| Name | Purpose |
 | --- | --- |
-| `WP_TOKEN` | Jeton d'accès à l'API WordPress / WooCommerce |
-| `STRIPE_KEY` | Clé publique Stripe |
-| `GOOGLE_CLIENTID` | Client ID Google Sign-In (serveur) |
-| `GOOGLEIOS_CLIENTID` | Client ID Google Sign-In (iOS) |
+| `WP_TOKEN` | Access token for the WordPress / WooCommerce API |
+| `STRIPE_KEY` | Stripe publishable key |
+| `GOOGLE_CLIENTID` | Google Sign-In client ID (server) |
+| `GOOGLEIOS_CLIENTID` | Google Sign-In client ID (iOS) |
 
-Ces valeurs étant intégrées au binaire de l'application, n'utilisez jamais d'identifiants privilégiés ou de clés privées côté serveur.
+Since these values are embedded in the app binary, never use privileged credentials or server-side private keys.

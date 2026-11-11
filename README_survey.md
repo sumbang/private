@@ -1,95 +1,95 @@
-# Survey – Back-office et API d'audits de points de vente
+# Survey – Back office and API for retail outlet audits
 
-Application web PHP (Yii 2) de gestion d'**enquêtes / audits terrain dans des points de vente** (magasins, boutiques, débits de boissons…). Elle se compose :
+PHP web application (Yii 2) for managing **field surveys / audits in retail outlets** (stores, shops, bars…). It consists of:
 
-- d'un **back-office d'administration** (thème AdminLTE) permettant de gérer les périodes, plannings, auditeurs, comptes, magasins, produits et audits ;
-- d'une **API REST** (`api/`, module `v1`) consommée par l'application mobile des auditeurs, qui y envoie les données collectées sur le terrain (recensement des magasins, relevés de produits, photos, géolocalisation).
+- an **administration back office** (AdminLTE theme) for managing periods, schedules, auditors, accounts, stores, products and audits;
+- a **REST API** (`api/`, `v1` module) used by the auditors' mobile app, which sends it the data collected in the field (store census, product readings, photos, geolocation).
 
-Public visé : les équipes de supervision qui planifient et suivent les campagnes d'audit, et les auditeurs terrain via l'application mobile.
+Intended audience: supervision teams who plan and monitor audit campaigns, and field auditors through the mobile app.
 
-## Fonctionnalités principales
+## Main features
 
-### Back-office (`controllers/`, `views/`)
+### Back office (`controllers/`, `views/`)
 
-- **Tableau de bord** et authentification des administrateurs.
-- **Gestion des périodes** d'audit (libellé, date de début et de fin).
-- **Gestion des plannings** : affectation de magasins à un auditeur sur une période, date et heure de début, suivi des dates/heures réelles de démarrage et de fin, commentaires ; **import de plannings** depuis un fichier.
-- **Gestion des auditeurs** (nom, téléphone, e-mail, code) et des **comptes** utilisateurs (rôles, photo).
-- **Gestion des magasins** : fiche détaillée (région, municipalité, ville, zone, urbanité, coordonnées GPS, enseigne, type de magasin, surface, adresse, type d'activité, nombre de caisses, système de réfrigération, consommation sur place, catégories de produits, propriétaire / chaîne, contacts, horaires, local de stockage, type de service, système de facturation…), historique des passages par planning, **export CSV**.
-- **Gestion des produits / articles** (catégorie, code, marque, origine, variante, saveur, conditionnement, poids, fabricant, pays, caractère alcoolisé, photo…).
-- **Gestion des audits** (« Survey management ») : statut, type, dates et heures, auditeur, magasin, planning ; **export CSV**.
+- **Dashboard** and administrator authentication.
+- **Audit period management** (label, start and end date).
+- **Schedule management**: assigning stores to an auditor for a period, start date and time, tracking of actual start and end dates/times, comments; **schedule import** from a file.
+- **Auditor management** (name, phone, e-mail, code) and user **account** management (roles, photo).
+- **Store management**: detailed record (region, municipality, city, area, urban/rural setting, GPS coordinates, brand, store type, floor area, address, activity type, number of checkouts, refrigeration system, on-site consumption, product categories, owner / chain, contacts, opening hours, storage room, service type, billing system…), visit history by schedule, **CSV export**.
+- **Product / item management** (category, code, brand, origin, variant, flavor, packaging, weight, manufacturer, country, alcoholic or not, photo…).
+- **Audit management** ("Survey management"): status, type, dates and times, auditor, store, schedule; **CSV export**.
 
-### API REST (`api/modules/v1/controllers/`)
+### REST API (`api/modules/v1/controllers/`)
 
-- `compte` : connexion / déconnexion, rafraîchissement, listes de référence (domaines, éléments parents, municipalités).
-- `store` : liste et création des magasins, envoi de photos (`uploader`, `uploaders`).
-- `product` : liste des produits, catégories, pays, filtres par marque / catégorie, envoi de photos.
-- `survey` : plannings de l'auditeur (`plan`), création d'un audit, saisie des relevés produits (quantité, prix, photo, position GPS), ouverture / réouverture / clôture / fin d'audit, modification et suppression.
+- `compte`: login / logout, refresh, reference lists (domains, parent items, municipalities).
+- `store`: list and create stores, photo upload (`uploader`, `uploaders`).
+- `product`: product list, categories, countries, filters by brand / category, photo upload.
+- `survey`: the auditor's schedules (`plan`), audit creation, entry of product readings (quantity, price, photo, GPS position), opening / reopening / closing / completion of an audit, editing and deletion.
 
-### Scripts d'import (`import/`)
+### Import scripts (`import/`)
 
-Scripts PHP autonomes pour importer en base des produits et des magasins depuis des fichiers CSV.
+Standalone PHP scripts for importing products and stores into the database from CSV files.
 
-## Stack technique
+## Tech stack
 
-- **PHP** ≥ 5.6 (image Docker fournie : PHP 7.1 + Apache)
-- **Yii 2** (`yiisoft/yii2` ~2.0.14), gabarit « basic » avec un point d'entrée API séparé
+- **PHP** ≥ 5.6 (Docker image provided: PHP 7.1 + Apache)
+- **Yii 2** (`yiisoft/yii2` ~2.0.14), "basic" template with a separate API entry point
 - `yiisoft/yii2-bootstrap`, `yiisoft/yii2-swiftmailer`
-- `dmstr/yii2-adminlte-asset` (thème AdminLTE du back-office)
-- Widgets Kartik : `yii2-widget-datepicker`, `yii2-widget-select2`, `yii2-widget-timepicker`
-- Base de données MySQL (via la configuration Yii)
-- Tests : Codeception
+- `dmstr/yii2-adminlte-asset` (AdminLTE theme for the back office)
+- Kartik widgets: `yii2-widget-datepicker`, `yii2-widget-select2`, `yii2-widget-timepicker`
+- MySQL database (through the Yii configuration)
+- Tests: Codeception
 
-## Structure du projet
+## Project structure
 
 ```
-api/                 # Application API REST (point d'entrée api/index.php, config/api.php, modules/v1)
-assets/              # Bundles d'assets Yii
-commands/            # Commandes console
+api/                 # REST API application (entry point api/index.php, config/api.php, modules/v1)
+assets/              # Yii asset bundles
+commands/            # Console commands
 config/              # Configuration (web.php, console.php, db.php, params.php, test*.php)
-controllers/         # Contrôleurs du back-office
-import/              # Scripts d'import CSV (produits, magasins)
-mail/                # Gabarits d'e-mails
-models/              # Modèles ActiveRecord et modèles de recherche (Store, Product, Planning,
+controllers/         # Back-office controllers
+import/              # CSV import scripts (products, stores)
+mail/                # E-mail templates
+models/              # ActiveRecord models and search models (Store, Product, Planning,
                      #   Periode, Auditeur, Compte, AuditStore, AuditProduit, Domaine…)
-runtime/             # Fichiers générés à l'exécution
-tests/               # Tests Codeception
-uploads/             # Fichiers et photos envoyés
-views/               # Vues du back-office (layouts AdminLTE inclus)
-web/                 # Point d'entrée web (index.php) et ressources publiques
-docker-compose.yml   # Environnement Docker PHP/Apache
-Vagrantfile, vagrant/ # Environnement Vagrant
+runtime/             # Files generated at runtime
+tests/               # Codeception tests
+uploads/             # Uploaded files and photos
+views/               # Back-office views (AdminLTE layouts included)
+web/                 # Web entry point (index.php) and public resources
+docker-compose.yml   # PHP/Apache Docker environment
+Vagrantfile, vagrant/ # Vagrant environment
 ```
 
-## Installation et lancement
+## Installation and running
 
-1. Installer les dépendances :
+1. Install the dependencies:
 
    ```bash
    composer install
    ```
 
-2. Créer une base de données MySQL et renseigner la connexion dans `config/db.php` (et `config/test_db.php` pour les tests).
+2. Create a MySQL database and set the connection in `config/db.php` (and `config/test_db.php` for the tests).
 
-3. Lancer l'application :
+3. Start the application:
 
-   - avec le serveur intégré de Yii :
+   - with the Yii built-in server:
 
      ```bash
-     php yii serve --docroot=web          # back-office
-     php -S localhost:8081 -t api         # API REST
+     php yii serve --docroot=web          # back office
+     php -S localhost:8081 -t api         # REST API
      ```
 
-   - ou avec Docker :
+   - or with Docker:
 
      ```bash
      docker-compose run --rm php composer install
      docker-compose up -d
      ```
 
-     Le conteneur expose l'application sur le port `8000` (`http://127.0.0.1:8000`).
+     The container exposes the application on port `8000` (`http://127.0.0.1:8000`).
 
-4. Lancer les tests :
+4. Run the tests:
 
    ```bash
    vendor/bin/codecept run
@@ -97,4 +97,4 @@ Vagrantfile, vagrant/ # Environnement Vagrant
 
 ## Configuration
 
-Aucun fichier `.env.example` n'est fourni. La configuration se fait dans les fichiers PHP de `config/` (connexion à la base dans `db.php`, paramètres applicatifs dans `params.php`) et `api/config/api.php` pour l'API. Les scripts de `import/` contiennent leurs propres paramètres de connexion à adapter avant usage. Pensez à désactiver `YII_DEBUG` / `YII_ENV=dev` dans `web/index.php` et `api/index.php` en production.
+No `.env.example` file is provided. Configuration is done in the PHP files of `config/` (database connection in `db.php`, application parameters in `params.php`) and in `api/config/api.php` for the API. The scripts in `import/` contain their own connection settings, which must be adjusted before use. Remember to disable `YII_DEBUG` / `YII_ENV=dev` in `web/index.php` and `api/index.php` in production.

@@ -1,69 +1,69 @@
 # Joodi Common
 
-Bibliothèque Java partagée de la plateforme **Joodi** (podcasts africains). Elle regroupe le
-modèle de données, l'accès à la base, la sécurité JWT et les services transverses utilisés par
-les deux applications serveur de Joodi :
+Shared Java library for the **Joodi** platform (African podcasts). It contains the
+data model, database access, JWT security and cross-cutting services used by
+Joodi's two server applications:
 
-- `joodi-api` : API REST consommée par les applications mobiles et la passerelle de paiement ;
-- `joodi-backend` : console d'administration web.
+- `joodi-api`: REST API used by the mobile apps and the payment gateway;
+- `joodi-backend`: web admin console.
 
-Public visé : les développeurs des services Joodi.
+Intended audience: developers of the Joodi services.
 
-## Fonctionnalités principales
+## Main features
 
-- **Entités JPA** (`dao`) : comptes et personnes, rôles, podcasts et épisodes, catégories,
-  langues, pays, domaines, publications, sliders, abonnements et souscriptions, achats,
-  paiements, codes promo, lectures, téléchargements, notes, listes personnelles,
-  notifications, exports, ainsi que des vues de statistiques (lectures, téléchargements).
-- **Dépôts Spring Data JPA** (`repositories`) pour chacune de ces entités.
-- **Sécurité** (`config`) : génération et validation de jetons JWT (`JwtUtils`), filtre
-  d'authentification (`AuthTokenFilter`), chargement des utilisateurs (`LoginService`).
-- **Services transverses** (`services`) :
-  - `AmazonService` : envoi et suppression de fichiers sur Amazon S3, génération de liens
-    signés CloudFront ;
-  - `EmailService` : envoi d'e-mails via SMTP ;
-  - `AbstractService` : base générique des services CRUD.
-- **Utilitaires** (`Setting`) : constantes (préfixe et durée des jetons), génération de jetons
-  et chaînes aléatoires, validation de mot de passe.
-- **Objets d'échange** (`bean`) : réponses génériques, requêtes de réinitialisation de mot de
-  passe, jetons de paiement/activation, métriques de contenus, tendances.
+- **JPA entities** (`dao`): accounts and persons, roles, podcasts and episodes, categories,
+  languages, countries, domains, publications, sliders, subscription plans and subscriptions,
+  purchases, payments, promo codes, plays, downloads, ratings, personal lists,
+  notifications, exports, as well as statistics views (plays, downloads).
+- **Spring Data JPA repositories** (`repositories`) for each of these entities.
+- **Security** (`config`): JWT token generation and validation (`JwtUtils`),
+  authentication filter (`AuthTokenFilter`), user loading (`LoginService`).
+- **Cross-cutting services** (`services`):
+  - `AmazonService`: uploading and deleting files on Amazon S3, generating CloudFront
+    signed URLs;
+  - `EmailService`: sending emails via SMTP;
+  - `AbstractService`: generic base for CRUD services.
+- **Utilities** (`Setting`): constants (token prefix and lifetime), generation of random
+  tokens and strings, password validation.
+- **Data transfer objects** (`bean`): generic responses, password reset requests,
+  payment/activation tokens, content metrics, trends.
 
-## Stack technique
+## Tech stack
 
 - Java 17
 - Spring Boot 3.5 (Data JPA, Security, Validation, Mail, Web Services)
 - PostgreSQL
-- JJWT (jetons JWT), Lombok
+- JJWT (JWT tokens), Lombok
 - AWS SDK v2 (S3, CloudFront), Bouncy Castle
-- Tests : JUnit 5, Mockito, Testcontainers ; couverture JaCoCo
-- Build : Maven (wrapper fourni)
-- CI/CD : GitHub Actions (build, publication du JAR en snapshot puis promotion en release
-  sur un dépôt d'artefacts Maven)
+- Tests: JUnit 5, Mockito, Testcontainers; JaCoCo coverage
+- Build: Maven (wrapper included)
+- CI/CD: GitHub Actions (build, publishing the JAR as a snapshot, then promotion to a release
+  on a Maven artifact repository)
 
-## Structure du projet
+## Project structure
 
 ```
 src/main/java/africa/joodi/common/
-├── bean/           # DTO et objets utilitaires
-├── config/         # JWT, filtre d'authentification, source de données, constantes
-├── dao/            # entités JPA
-├── repositories/   # dépôts Spring Data
-├── services/       # S3/CloudFront, e-mail, login, service générique
-└── exception/      # exceptions métier
-src/main/resources/application.properties   # propriétés attendues (valeurs injectées)
-src/test/                                   # tests unitaires
+├── bean/           # DTOs and utility objects
+├── config/         # JWT, authentication filter, data source, constants
+├── dao/            # JPA entities
+├── repositories/   # Spring Data repositories
+├── services/       # S3/CloudFront, email, login, generic service
+└── exception/      # business exceptions
+src/main/resources/application.properties   # expected properties (injected values)
+src/test/                                   # unit tests
 ```
 
-## Installation et utilisation
+## Installation and usage
 
-Prérequis : JDK 17 (le wrapper Maven est inclus).
+Prerequisites: JDK 17 (the Maven wrapper is included).
 
 ```bash
 ./mvnw clean install
 ```
 
-La bibliothèque est alors installée dans le dépôt Maven local et peut être déclarée comme
-dépendance :
+The library is then installed in the local Maven repository and can be declared as a
+dependency:
 
 ```xml
 <dependency>
@@ -75,13 +75,13 @@ dépendance :
 
 ## Configuration
 
-Aucun fichier `.env.example` n'est fourni. Les propriétés de `application.properties` sont
-résolues à partir de propriétés fournies par l'application hôte :
+No `.env.example` file is provided. The properties in `application.properties` are
+resolved from properties supplied by the host application:
 
-- Base de données : `app.database.url`, `app.database.user`, `app.database.pass`,
+- Database: `app.database.url`, `app.database.user`, `app.database.pass`,
   `app.database.schema`
-- SMTP : `app.mail.host`, `app.mail.port`, `app.mail.username`, `app.mail.password`
-- JWT : `app.jwtutil.secret`
-- AWS : `aws.s3.bucket-name`, `aws.s3.region`, `aws.s3.access-key`, `aws.s3.secret`,
+- SMTP: `app.mail.host`, `app.mail.port`, `app.mail.username`, `app.mail.password`
+- JWT: `app.jwtutil.secret`
+- AWS: `aws.s3.bucket-name`, `aws.s3.region`, `aws.s3.access-key`, `aws.s3.secret`,
   `aws.cloudfront.distribution`, `aws.cloudfront.keypairId`, `aws.cloudfront.privateKey`
-- URLs : `local-url`, `apps-url`, `img-url`, `bill-url`
+- URLs: `local-url`, `apps-url`, `img-url`, `bill-url`

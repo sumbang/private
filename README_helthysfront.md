@@ -1,71 +1,71 @@
 # Healthys Front (Healthys Hôpital)
 
-Application mobile Flutter de la famille **Healthys**, destinée aux **professionnels et structures de santé**
-(personnel administratif, infirmier(e)s, médecins). Elle permet de créer et d'activer des comptes patients,
-de gérer les rendez-vous et les consultations, et de consulter les dossiers médicaux des patients, en
-s'appuyant sur l'API back-end Healthys.
+Flutter mobile app of the **Healthys** family, intended for **healthcare professionals and facilities**
+(administrative staff, nurses, doctors). It lets them create and activate patient accounts,
+manage appointments and consultations, and view patients' medical records, using the Healthys
+back-end API.
 
-Elle complète les autres applications de l'écosystème :
-- `healthys_patients` / `healthys_patient` : application destinée aux patients ;
-- `healthysvendeur` : application des revendeurs (enregistrement de patients et d'entreprises).
+It complements the other apps of the ecosystem:
+- `healthys_patients` / `healthys_patient`: app for patients;
+- `healthysvendeur`: app for resellers (registration of patients and companies).
 
-## Fonctionnalités principales
+## Main features
 
-- **Connexion** par identifiant (ou numéro d'ordre) et mot de passe, réinitialisation du mot de passe,
-  choix d'un profil (« Administration », « Infirmier(e) ») et changement de profil en cours de session.
-- **Verrouillage de l'application** (`flutter_app_lock`) après une période d'inactivité en arrière-plan.
-- **Deux tableaux de bord selon le rôle de l'utilisateur** :
-  - *Espace structure / administration* : créer un compte patient, activer un compte patient,
-    nouveau rendez-vous, gestion des rendez-vous, enregistrement d'une entreprise ;
-  - *Espace médecin* : nouvelle consultation, gestion des consultations, gestion des rendez-vous,
-    dossiers médicaux des patients.
-- **Consultations** : création, modification, détail, clôture d'une consultation, rapport médical,
-  suivi de l'évolution des paramètres.
-- **Rendez-vous** : création, modification, liste et clôture des rendez-vous.
-- **États financiers** : affichage de la commission et du solde du compte, demande de paiement
-  (avec ou sans signature du patient, via un pad de signature).
-- Prise de photo / sélection d'images (caméra, galerie), compression d'images, envoi de fichiers,
-  visualisation de PDF, génération de QR codes.
-- **Multilingue** : français, anglais et espagnol (`locale/i18n_*.json`), avec écran de choix de la langue.
+- **Login** with a username (or registration number) and password, password reset,
+  profile selection ("Administration", "Nurse") and profile switching during a session.
+- **App lock** (`flutter_app_lock`) after a period of inactivity in the background.
+- **Two dashboards depending on the user's role**:
+  - *Facility / administration area*: create a patient account, activate a patient account,
+    new appointment, appointment management, company registration;
+  - *Doctor area*: new consultation, consultation management, appointment management,
+    patients' medical records.
+- **Consultations**: creation, editing, details, closing a consultation, medical report,
+  tracking of parameter changes.
+- **Appointments**: creation, editing, listing and closing appointments.
+- **Financial statements**: display of the commission and account balance, payment request
+  (with or without the patient's signature, via a signature pad).
+- Photo capture / image selection (camera, gallery), image compression, file upload,
+  PDF viewing, QR code generation.
+- **Multilingual**: French, English and Spanish (`locale/i18n_*.json`), with a language selection screen.
 
-## Stack technique
+## Tech stack
 
-- **Langage** : Dart (SDK `>=2.7.0 <3.0.0`)
-- **Framework** : Flutter (Android, iOS, web)
-- **Principales dépendances** : `http`, `dio`, `shared_preferences`, `flutter_app_lock`, `image_picker`,
+- **Language**: Dart (SDK `>=2.7.0 <3.0.0`)
+- **Framework**: Flutter (Android, iOS, web)
+- **Main dependencies**: `http`, `dio`, `shared_preferences`, `flutter_app_lock`, `image_picker`,
   `camera`, `file_picker`, `flutter_image_compress`, `flutter_pdfview`, `qr_flutter`,
   `syncfusion_flutter_signaturepad`, `webview_flutter_plus`, `cached_network_image`, `fluttertoast`,
   `url_launcher`, `permission_handler`, `intl_phone_field`
-- **Identifiant Android** : `com.novasos.healthys_hopital`
+- **Android application ID**: `com.novasos.healthys_hopital`
 
-## Structure du projet
+## Project structure
 
 ```
 lib/
-├── main.dart        # Point d'entrée : verrouillage, langue, redirection selon le rôle
-├── config/          # Configuration (URL de l'API), traductions, singleton, tailles d'écran
-├── page/            # Écrans (connexion, accueils, consultations, rendez-vous, patients, soldes…)
-├── form/            # Formulaires (connexion, patient, consultation, rendez-vous, entreprise, paiement…)
-├── fragment/        # Fragments d'accueil, rendez-vous, rapport médical
-├── model/           # Modèles de données (Compte, Profil, Meeting, Docteur, Consultation…)
-└── lock/            # Écran de verrouillage de l'application
-locale/              # Fichiers de traduction (fr, en, es)
-img/                 # Images et icônes de l'application
-android/, ios/, web/ # Projets natifs et cible web
+├── main.dart        # Entry point: lock, language, role-based redirection
+├── config/          # Configuration (API URL), translations, singleton, screen sizes
+├── page/            # Screens (login, home screens, consultations, appointments, patients, balances…)
+├── form/            # Forms (login, patient, consultation, appointment, company, payment…)
+├── fragment/        # Home, appointment and medical report fragments
+├── model/           # Data models (Compte, Profil, Meeting, Docteur, Consultation…)
+└── lock/            # App lock screen
+locale/              # Translation files (fr, en, es)
+img/                 # App images and icons
+android/, ios/, web/ # Native projects and web target
 ```
 
-## Installation et lancement
+## Installation and running
 
-Prérequis : un SDK Flutter compatible avec Dart 2 (contrainte `>=2.7.0 <3.0.0`), Android Studio / Xcode.
+Prerequisites: a Flutter SDK compatible with Dart 2 (constraint `>=2.7.0 <3.0.0`), Android Studio / Xcode.
 
 ```bash
 flutter pub get
-flutter run                 # lancer sur un appareil ou un émulateur
-flutter build apk           # générer l'APK Android
-flutter build ios           # générer l'application iOS (sur macOS)
+flutter run                 # run on a device or an emulator
+flutter build apk           # build the Android APK
+flutter build ios           # build the iOS app (on macOS)
 ```
 
-Pour régénérer les icônes de l'application :
+To regenerate the app icons:
 
 ```bash
 flutter pub run flutter_launcher_icons:main
@@ -73,6 +73,6 @@ flutter pub run flutter_launcher_icons:main
 
 ## Configuration
 
-Le projet ne contient pas de fichier `.env.example`. Les adresses du serveur back-end (API, images, PDF)
-sont définies dans `lib/config/Setting.dart` (`apiracine`, `serveurracine`, `serveurimage`,
-`serveurimage1`, `serveurpdf`) et doivent être adaptées à votre environnement avant la compilation.
+The project does not include a `.env.example` file. The back-end server addresses (API, images, PDF)
+are defined in `lib/config/Setting.dart` (`apiracine`, `serveurracine`, `serveurimage`,
+`serveurimage1`, `serveurpdf`) and must be adapted to your environment before building.
