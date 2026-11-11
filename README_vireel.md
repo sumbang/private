@@ -4,13 +4,16 @@ This file centralizes the information that was previously spread across several 
 
 ## Overview
 
-Vireel.app is an AI-assisted video creation platform built around three main areas:
+Vireel.app is an AI-assisted video creation platform. From an uploaded video or a YouTube link, it offers the following modules:
 
-- **Clip Generator**: turns long videos into short clips (Reels/Shorts/TikTok).
-- **AI Shorts Creator**: automated UGC creation pipeline.
-- **YouTube Studio**: helps generate optimized titles, thumbnails and descriptions.
+- **Reels Generator**: turns a long-form video into short vertical clips (Reels/Shorts/TikTok), with hooks, subtitles and thumbnails; reels can also be created manually and edited.
+- **AI Captions**: generates captions tailored to the target platform, with customizable styles and themes, then renders the final video.
+- **Film summary**: turns a full movie into a narrated, edited summary (transcript, scene detection, AI edit plan reviewed by the user, TTS voice-over, FFmpeg assembly).
+- **Anonymous stories**: turns a video testimonial into an anonymized, editable written story.
+- **Social publications**: publishes the generated content to connected accounts (YouTube, TikTok, Instagram, Facebook, LinkedIn), with daily quotas and publication statistics.
+- **Account and billing**: credit-based usage, Stripe subscription plans, referrals and notifications.
 
-The project is structured around a Python/FastAPI backend, a React/Vite dashboard, a rendering service and cloud/AI integrations.
+The project is structured around a Python/FastAPI backend, a React/Vite dashboard (French/English), a Remotion rendering service and cloud/AI integrations (Supabase, S3, AI providers).
 
 ## Project components
 

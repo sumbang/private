@@ -36,7 +36,7 @@ This repository collects the READMEs of my private repositories, to showcase the
 | sygem | Spring Boot member portal for a company mutual fund: financial standing, history, online loan and financial aid requests. | [README_sygem.md](README_sygem.md) |
 | tsscourses | Flutter e-learning app (mobile, tablet, desktop, web) with Vimeo video courses, progress tracking and offline downloads. | [README_tsscourses.md](README_tsscourses.md) |
 | tssperformance-electron | Electron desktop app for TSS Performance online training: wraps the web app and builds Windows and macOS installers. | [README_tssperformance-electron.md](README_tssperformance-electron.md) |
-| vireel | AI video creation platform: short clips, UGC Shorts and YouTube tools. Python/FastAPI backend, React dashboard, Supabase and S3. | [README_vireel.md](README_vireel.md) |
+| vireel | AI video creation platform: reels from long videos, AI captions, film summaries, anonymous stories and social publishing. | [README_vireel.md](README_vireel.md) |
 | wouri-v4-backend | Backend of the Wouri TV v4 video streaming platform. | [README_wouri-v4-backend.md](README_wouri-v4-backend.md) |
 | wouri_4 | Wouri TV v4 Flutter app, the crossroads of African cinemas: African films and series on mobile, tablet and web. | [README_wouri_4.md](README_wouri_4.md) |
 | wouritv | Wouri TV v5 Flutter app, the crossroads of African cinemas, built on Supabase with signed premium playback. | [README_wouritv.md](README_wouritv.md) |
