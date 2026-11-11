@@ -146,12 +146,3 @@ The repo contains compose files for different environments:
 - `docker-compose.prod.yml`
 
 Check the environment variables and the Supabase migrations before going to production.
-
-The migration `supabase/migrations/20261012_media_lifecycle_and_storage_quota_removal.sql`
-drops `abonnement.stockage` and creates the `media_assets` table (registry of the
-physical lifecycle of media -- see the "Media retention" section
-above). No historical media is retroactively linked to this
-table by this migration (no backfill DML): a media item created before it was
-applied simply has no `media_assets` row and is therefore never
-selected by the expiration/notification jobs -- a deliberate backfill
-remains to be done separately if desired.
