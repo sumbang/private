@@ -155,9 +155,3 @@ table by this migration (no backfill DML): a media item created before it was
 applied simply has no `media_assets` row and is therefore never
 selected by the expiration/notification jobs -- a deliberate backfill
 remains to be done separately if desired.
-
-## Notes and limitations
-
-- Some external integrations (AI, S3, Supabase, social networks) require valid credentials.
-- Performance depends on machine resources and on the nature of the media.
-- The AI/UGC workflows evolve iteratively and may require business adjustments.
